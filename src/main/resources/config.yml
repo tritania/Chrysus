@@ -1,0 +1,22 @@
+# Are slaes tax on
+Tax: true
+# Do player own companys have to pay a daily wage to their employees
+# note as of Version 0.1.0 this plugin does not trac player activity 
+Wages: true
+# Are player owned companies allowed to be traded
+StockMarket: true
+# Starting tax rate
+TaxRate: 1.10
+# If wages are turned on what is the value of minimum wage
+MinimumWage: 100
+# What percentage of a company may be placed as an IPO on the server (IE
+# how much of the company can be traded)
+IPO: 0.10
+# Cost of Founding a company
+FoundingCost: 12000
+# How much a company will have in its wallet after being founded
+InitialCapitalC: 4000
+# How much money a player will have upon joining the server
+InitialCapitalP: 6000
+# Is the web interface active
+WebInterface: true

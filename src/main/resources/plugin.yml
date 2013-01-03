@@ -1,0 +1,17 @@
+name: Chrysus
+version: 1.0
+description: >
+  Creates a a complex dynamic economy
+author: Tritania
+website: https://github.com/tritania/Chrysus
+
+main: org.tritania.chrysus.Chrysus
+
+commands:
+  chrysus:
+    description: This command shows user specific data
+    aliases: ['isk']
+    usage: >
+      /<command>
+      [info [OPTION] [NAME]
+      | clean [all]]
