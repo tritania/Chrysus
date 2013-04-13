@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Erik Wilson <erikwilson@magnorum.com>
+ * Copyright 2012-2013 Erik Wilson <erikwilson@magnorum.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,12 @@ public class Configuration extends YamlConfiguration {
 		private Logger log;
 		private Chrysus plugin;
 		
+		public String SQLdriver;
+		public String SQLurl;
+		public String SQLuser;
+		public String SQLpass;
+		public String SQLprefix;
+		
 		public boolean	tax;	//tax
 		public boolean	wage;	//wages
 		public boolean	pub;	//are stocks being traded
@@ -44,7 +50,7 @@ public class Configuration extends YamlConfiguration {
 		public int		cfc; 	//company founding costs
 		public int		icc;	//inital company capital
 		public int		ipc;	//inital player capital 
-		public boolean 	wi; 
+		public boolean	wi; 
 		
 
 
@@ -54,6 +60,12 @@ public class Configuration extends YamlConfiguration {
 		this.log		= log;
 		this.plugin		= plugin;
 	
+		SQLdriver   = "sql";
+        SQLuser     = null;
+		SQLpass     = null;
+		SQLprefix   = null;
+		SQLurl      = String.format("jdbc:sqlite:%s%sdatabase.sqlite",
+									config.getParent(), config.separator);
 		tax		= true;
 		wage	= true;
 		pub		= true;
@@ -77,12 +89,12 @@ public class Configuration extends YamlConfiguration {
 			log.warning("cannot acces config, using preset values.");
 			defaults = true;
 		}
-		
-		if(contains("Configuration")) {
-			loadLegacy();
-			return;
-		}
 	
+		SQLdriver	= getString("SQLdriver", SQLdriver);
+		SQLurl		= getString("SQLurl", SQLurl);
+		SQLuser		= getString("SQLuser", SQLuser);
+		SQLpass		= getString("SQLpass", SQLpass);
+		SQLprefix	= getString("SQLprefix", SQLprefix);
 		tax		= getBoolean("Tax",				tax);
 		wage	= getBoolean("Wages",			wage);
 		pub		= getBoolean("StockMarket",		pub);
@@ -90,37 +102,24 @@ public class Configuration extends YamlConfiguration {
 		pay		= getDouble("MinimumWage",		pay);	
 		ipo		= getDouble("IPO",				ipo);
 		cfc		= getInt("FoundingCost",		cfc);
-		icc		= getInt("InitialCapitalC", 	icc);
-		ipc		= getInt("InitialCapitalP",					ipc);
-		wi		= getBoolean("WebInterface", 	wi);
+		icc		= getInt("InitialCapitalC",		icc);
+		ipc		= getInt("InitialCapitalP",		ipc);
+		wi		= getBoolean("WebInterface",	wi);
 	
 		if(defaults)
 			save();
 		
 		}
 	
-	public void loadLegacy() { 
-		
-		log.info("Converting configuration to the current format.");
-		tax		= getBoolean("Configuration.Tax",				tax);
-		wage	= getBoolean("Configuration.Wages",				wage);
-		pub		= getBoolean("Configuration.StockMarket",		pub);
-		tr		= getDouble("Configuration.TaxRate",			tr);
-		pay		= getDouble("Configuration.MinimumWage",		pay);	
-		ipo		= getDouble("Configuration.IPO",				ipo);
-		cfc		= getInt("Configuration.FoundingCost",			cfc);
-		icc		= getInt("Configuration.InitialCapitalC", 		icc);
-		ipc		= getInt("Configuration.InitialCapitalP",		ipc);
-		wi		= getBoolean("Configuration.WebInterface",		wi);
-		
-		
-		save();
-	}
-	
 	public void save() {
 		
 		YamlConfiguration newConfig = new YamlConfiguration();
 		
+		newConfig.set("SQLdriver", 		SQLdriver);
+		newConfig.set("SQLurl", 		SQLurl);
+		newConfig.set("SQLuser", 		SQLuser);
+		newConfig.set("SQLpass", 		SQLpass);
+		newConfig.set("SQLprefix", 		SQLprefix);
 		newConfig.set("tax",				tax);
 		newConfig.set("Wages",				wage);
 		newConfig.set("StockMarket",		pub);
@@ -128,9 +127,9 @@ public class Configuration extends YamlConfiguration {
 		newConfig.set("MinimumWage",		pay);
 		newConfig.set("IPO",				ipo);
 		newConfig.set("FoundingCost",		cfc);
-		newConfig.set("InitialCapitalC", 	icc);
+		newConfig.set("InitialCapitalC",	icc);
 		newConfig.set("InitialCapitalP",	ipc);
-		newConfig.set("WebInterface", 		wi);
+		newConfig.set("WebInterface",		wi);
 		
 		File ConfigurationFile = new File(plugin.getDataFolder(), "config.yml");
 		
