@@ -21,12 +21,10 @@ InitialCapitalP: 6000
 # Is the web interface active
 WebInterface: true
 #
-configpath: null
-#
 SQLurl: jdbc:mysql://localhost:3306/chrysus
 #
 SQLuser: null
 #
 SQLpass: null
-#use mysql?
-usemySQL: true
+
+

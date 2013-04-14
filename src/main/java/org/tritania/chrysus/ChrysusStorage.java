@@ -41,7 +41,6 @@ public class ChrysusStorage
 	}
 	
 	private static Connection conn = null;
-	public final static String sqlitedb = "/chrysus.db";
 
 	private final static String ITEM_IO = ""; 
 	private final static String PLAYER_IO = "CREATE TABLE `PLAYER_IO` ("
@@ -58,20 +57,11 @@ public class ChrysusStorage
 	{
 		try
 		{
-			if(Chrysus.usemySQL) 
-        	{
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(Chrysus.SQLurl, Chrysus.SQLuser, Chrysus.SQLpass);
 				conn.setAutoCommit(false);
-			}
-			else 
-			{
-				Class.forName("org.sqlite.JDBC");
-				conn = DriverManager.getConnection("jdbc:sqlite:" + Chrysus.configpath + "/chrysus.db");
-				conn.setAutoCommit(false);	
-			}
-		
 		}
+
 			
 		catch (SQLException ex) 
 		{ 
@@ -80,7 +70,7 @@ public class ChrysusStorage
 		}
         catch (ClassNotFoundException ex) 
         { 
-			Chrysus.logger.severe("You need the SQLite/MySQL library. :");
+			Chrysus.logger.severe("You need the MySQL library. :");
         	Chrysus.logger.severe("  " + ex.getMessage());
 		}
         
@@ -136,18 +126,6 @@ public class ChrysusStorage
     		st.executeUpdate(PLAYER_IO);
     		conn.commit();
     		
-    		if(Chrysus.usemySQL)
-    		{ 
-    			Chrysus.logger.info(" Modifying database for MySQL support");
-    			
-    			File sqlitefile = new File(Chrysus.configpath + sqlitedb);
-    			if (!sqlitefile.exists()) 
-    			{
-    				Chrysus.logger.info(" Could not find old " + sqlitedb);
-    				return;
-    			} 
-			}
-			else { } //add sqlite support 
 		}
 		catch (SQLException ex) 
     	{ 
@@ -175,20 +153,13 @@ public class ChrysusStorage
 		if(conn != null) 
 		{
 			try {
-				if(Chrysus.usemySQL)
-				{
+				
 					if(conn.isValid(10)) 
 					{
 						conn.close();
 					}
 					conn = null;
 				} 
-				else 
-				{
-					conn.close();
-					conn = null;
-				}
-			} 
 			catch (SQLException ex) 
 			{ 
 					Chrysus.logger.severe("Error on Connection close :");
@@ -214,6 +185,15 @@ public class ChrysusStorage
 		}
 		return conn;
 	}
+	
+	public static void cleanData(String playername)
+	{
+		
+	}
     
+    public static void sell(String playername, String items)
+	{
+		
+	}
 }
 

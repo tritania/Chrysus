@@ -70,8 +70,6 @@ public class Chrysus extends JavaPlugin
 		SQLuser    = this.config.SQLuser;
 		SQLpass    = this.config.SQLpass;
 		SQLurl     = this.config.SQLurl;
-		configpath = this.config.configpath;
-		usemySQL   = this.config.usemySQL;
 		ChrysusStorage.getConnection();
 	}
 

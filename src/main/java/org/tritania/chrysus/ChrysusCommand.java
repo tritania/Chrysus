@@ -47,6 +47,8 @@ public class ChrysusCommand implements CommandExecutor
 			return clean(sender, args); //
 		else if(args[0].equalsIgnoreCase("info"))
 			return info(sender, args);
+		else if(args[0].equalsIgnoreCase("sell"))
+			return info(sender, args);
 		
 		return false;
 	}
@@ -60,6 +62,7 @@ public class ChrysusCommand implements CommandExecutor
 			}
 		
 		if(sender instanceof Player)
+			ChrysusStorage.cleanData(args[1]);
 			Message.info(sender, "Data wiped");
 			return true;
 	}
@@ -67,6 +70,14 @@ public class ChrysusCommand implements CommandExecutor
 	private boolean info(CommandSender sender, String[] args)
 	{
 		return true;
+	}
+	
+	private boolean sell(CommandSender sender, String[] args)
+	{
+		if(sender instanceof Player)
+			ChrysusStorage.sell(args[0], args[1]);
+			Message.info(sender, "Item sold");
+			return true;
 	}
 }
 		

@@ -34,12 +34,10 @@ public class Configuration extends YamlConfiguration {
 		private File config;
 		private Logger log;
 		private Chrysus plugin;
-		
-		public String configpath;
+
 		public String SQLurl;
 		public String SQLuser;
 		public String SQLpass;
-		public boolean usemySQL;
 		
 		public boolean	tax;	//tax
 		public boolean	wage;	//wages
@@ -60,10 +58,8 @@ public class Configuration extends YamlConfiguration {
 		this.log		= log;
 		this.plugin		= plugin;
 	
-		configpath  = null;
         SQLuser     = null;
 		SQLpass     = null;
-		usemySQL    = true;
 		SQLurl      = "jdbc:mysql://localhost:3306/chrysus";
 		
 		tax		= true;
@@ -90,11 +86,9 @@ public class Configuration extends YamlConfiguration {
 			defaults = true;
 		}
 	
-		configpath	= getString("configpath", configpath);
 		SQLurl		= getString("SQLurl", SQLurl);
 		SQLuser		= getString("SQLuser", SQLuser);
 		SQLpass		= getString("SQLpass", SQLpass);
-		usemySQL	= getBoolean("usemySQL", usemySQL);
 		tax		= getBoolean("Tax",				tax);
 		wage	= getBoolean("Wages",			wage);
 		pub		= getBoolean("StockMarket",		pub);
@@ -115,11 +109,9 @@ public class Configuration extends YamlConfiguration {
 		
 		YamlConfiguration newConfig = new YamlConfiguration();
 		
-		newConfig.set("configpath", 		configpath);
 		newConfig.set("SQLurl", 		SQLurl);
 		newConfig.set("SQLuser", 		SQLuser);
 		newConfig.set("SQLpass", 		SQLpass);
-		newConfig.set("usemySQL", 		usemySQL);
 		newConfig.set("tax",				tax);
 		newConfig.set("Wages",				wage);
 		newConfig.set("StockMarket",		pub);
