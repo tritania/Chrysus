@@ -67,8 +67,16 @@ public class ChrysusStorage
 		
 		}
 			
-		catch (SQLException ex) { }
-        catch (ClassNotFoundException ex) { }
+		catch (SQLException ex) 
+		{ 
+			Chrysus.logger.severe("SQL exception on initialize :");
+        	Chrysus.logger.severe("  " + ex.getMessage());
+		}
+        catch (ClassNotFoundException ex) 
+        { 
+			Chrysus.logger.severe("You need the SQLite/MySQL library. :");
+        	Chrysus.logger.severe("  " + ex.getMessage());
+		}
         
         if (!TableExists()) 
         {
@@ -105,6 +113,8 @@ public class ChrysusStorage
         } 
         catch (SQLException ex) 
         {
+            Chrysus.logger.severe(" Table Check Exception :");
+        	Chrysus.logger.severe("  " + ex.getMessage());
             return false;
         } 
         finally 
@@ -113,7 +123,11 @@ public class ChrysusStorage
             {
                 if (rs != null)
                     rs.close();
-            } catch (SQLException ex) { }
+            } catch (SQLException ex) 
+            { 
+					Chrysus.logger.severe(" Table Check SQL Exception (on closing) :");
+					Chrysus.logger.severe("  " + ex.getMessage());
+			}
         }
     }
     
@@ -121,7 +135,51 @@ public class ChrysusStorage
     {}
     
     public static void CreateTable()
-    {}
+    {
+		Statement st = null;
+    	try 
+    	{
+			Chrysus.logger.info(" Creating Database...");
+    		Connection conn = getConnection();
+    		st = conn.createStatement();
+    		st.executeUpdate(PLAYER_IO);
+    		conn.commit();
+    		
+    		UpdateTables();
+    		
+    		if(Chrysus.usemySQL)
+    		{ 
+    			Chrysus.logger.info(" Modifying database for MySQL support");
+    			
+    			File sqlitefile = new File(Chrysus.configpath + sqlitedb);
+    			if (!sqlitefile.exists()) 
+    			{
+    				Chrysus.logger.info(" Could not find old " + sqlitedb);
+    				return;
+    			} 
+			}
+			else { } //add sqlite support 
+		}
+		catch (SQLException ex) 
+    	{
+    		Chrysus.logger.severe(" Create Table Exception :");
+    		Chrysus.logger.severe("  " + ex.getMessage());
+    	}
+    	finally 
+    	{
+    		try {
+    			if (st != null) 
+    			{
+    				st.close();
+    			}
+    		} 
+    		catch (SQLException ex) 
+    		{
+    			Chrysus.logger.severe(" Could not create the table (on close) :");
+    			Chrysus.logger.severe("  " + ex.getMessage());
+    		}
+    	} 
+	 }
     
     public static void closeConnection()
     {
@@ -142,7 +200,11 @@ public class ChrysusStorage
 					conn = null;
 				}
 			} 
-			catch (SQLException ex) { }
+			catch (SQLException ex) 
+			{ 
+					Chrysus.logger.severe("Error on Connection close :");
+					Chrysus.logger.severe("  " + ex.getMessage());
+			}
 		}
     }
     
@@ -157,7 +219,8 @@ public class ChrysusStorage
 			} 
 			catch (SQLException ex) 
 			{
-				Chrysus.logger.severe(Chrysus.PREFIX + "Failed to check SQL status :");
+				Chrysus.logger.severe("Failed to check SQL status :");
+				Chrysus.logger.severe("  " + ex.getMessage());
 		    }
 		}
 		return conn;

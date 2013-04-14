@@ -43,7 +43,6 @@ public class Chrysus extends JavaPlugin
 	private ChrysusCommand		command;
 	public static final Logger logger = Logger.getLogger("Minecraft");
 	
-	public static String PREFIX;
 	public static boolean usemySQL;
 	public static String SQLuser;
 	public static String SQLpass;
@@ -73,6 +72,7 @@ public class Chrysus extends JavaPlugin
 		SQLurl     = this.config.SQLurl;
 		configpath = this.config.configpath;
 		usemySQL   = this.config.usemySQL;
+		ChrysusStorage.getConnection();
 	}
 
 	public void onDisable()

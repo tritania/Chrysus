@@ -64,8 +64,8 @@ public class Configuration extends YamlConfiguration {
         SQLuser     = null;
 		SQLpass     = null;
 		usemySQL    = true;
-		SQLurl      = String.format("jdbc:sqlite:%s%sdatabase.sqlite",
-									config.getParent(), config.separator);
+		SQLurl      = "jdbc:mysql://localhost";
+		
 		tax		= true;
 		wage	= true;
 		pub		= true;
