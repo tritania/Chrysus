@@ -64,7 +64,7 @@ public class Configuration extends YamlConfiguration {
         SQLuser     = null;
 		SQLpass     = null;
 		usemySQL    = true;
-		SQLurl      = "jdbc:mysql://localhost";
+		SQLurl      = "jdbc:mysql://localhost:3306/chrysus";
 		
 		tax		= true;
 		wage	= true;

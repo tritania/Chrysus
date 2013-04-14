@@ -43,8 +43,14 @@ public class ChrysusStorage
 	private static Connection conn = null;
 	public final static String sqlitedb = "/chrysus.db";
 
-	private final static String ITEM_IO = ""; //will hold selling buying data
-	private final static String PLAYER_IO = ""; //will hold player money info
+	private final static String ITEM_IO = ""; 
+	private final static String PLAYER_IO = "CREATE TABLE `PLAYER_IO` ("
+	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+	+ "`player` INTEGER(11) NOT NULL,"
+	+ "`company` VARCHAR(30) NOT NULL,"
+	+ "`balance` INTEGER(11) NOT NULL"
+	+ ");"; 
+	
 	private final static String COMPANY_IO = ""; //I think you ge the picture by now
 	/*The Above are strings for the table creation querys*/
 
@@ -60,9 +66,9 @@ public class ChrysusStorage
 			}
 			else 
 			{
-			Class.forName("org.sqlite.JDBC");
-        	conn = DriverManager.getConnection("jdbc:sqlite:" + Chrysus.configpath + "/chrysus.db");
-        	conn.setAutoCommit(false);	
+				Class.forName("org.sqlite.JDBC");
+				conn = DriverManager.getConnection("jdbc:sqlite:" + Chrysus.configpath + "/chrysus.db");
+				conn.setAutoCommit(false);	
 			}
 		
 		}
@@ -83,20 +89,8 @@ public class ChrysusStorage
             CreateTable();
         }
         
-        UpdateTables();
-        
         return conn;
 	}
-	
-	public static String getSchema()
-    {
-    	String conn = Chrysus.SQLurl;
-    	
-    	if(conn.lastIndexOf("/") > 0)
-    		return conn.substring(conn.lastIndexOf("/") + 1);
-    	else
-    		return "";
-    }
     
     private static boolean TableExists()
     {
@@ -130,10 +124,7 @@ public class ChrysusStorage
 			}
         }
     }
-    
-    public static void UpdateTables() 
-    {}
-    
+      
     public static void CreateTable()
     {
 		Statement st = null;
@@ -144,8 +135,6 @@ public class ChrysusStorage
     		st = conn.createStatement();
     		st.executeUpdate(PLAYER_IO);
     		conn.commit();
-    		
-    		UpdateTables();
     		
     		if(Chrysus.usemySQL)
     		{ 
@@ -161,7 +150,7 @@ public class ChrysusStorage
 			else { } //add sqlite support 
 		}
 		catch (SQLException ex) 
-    	{
+    	{ 
     		Chrysus.logger.severe(" Create Table Exception :");
     		Chrysus.logger.severe("  " + ex.getMessage());
     	}

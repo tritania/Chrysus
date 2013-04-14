@@ -23,7 +23,7 @@ WebInterface: true
 #
 configpath: null
 #
-SQLurl: null
+SQLurl: jdbc:mysql://localhost:3306/chrysus
 #
 SQLuser: null
 #
