@@ -35,11 +35,11 @@ public class Configuration extends YamlConfiguration {
 		private Logger log;
 		private Chrysus plugin;
 		
-		public String SQLdriver;
+		public String configpath;
 		public String SQLurl;
 		public String SQLuser;
 		public String SQLpass;
-		public String SQLprefix;
+		public boolean usemySQL;
 		
 		public boolean	tax;	//tax
 		public boolean	wage;	//wages
@@ -60,10 +60,10 @@ public class Configuration extends YamlConfiguration {
 		this.log		= log;
 		this.plugin		= plugin;
 	
-		SQLdriver   = "sql";
+		configpath  = null;
         SQLuser     = null;
 		SQLpass     = null;
-		SQLprefix   = null;
+		usemySQL    = true;
 		SQLurl      = String.format("jdbc:sqlite:%s%sdatabase.sqlite",
 									config.getParent(), config.separator);
 		tax		= true;
@@ -90,11 +90,11 @@ public class Configuration extends YamlConfiguration {
 			defaults = true;
 		}
 	
-		SQLdriver	= getString("SQLdriver", SQLdriver);
+		configpath	= getString("configpath", configpath);
 		SQLurl		= getString("SQLurl", SQLurl);
 		SQLuser		= getString("SQLuser", SQLuser);
 		SQLpass		= getString("SQLpass", SQLpass);
-		SQLprefix	= getString("SQLprefix", SQLprefix);
+		usemySQL	= getBoolean("usemySQL", usemySQL);
 		tax		= getBoolean("Tax",				tax);
 		wage	= getBoolean("Wages",			wage);
 		pub		= getBoolean("StockMarket",		pub);
@@ -115,11 +115,11 @@ public class Configuration extends YamlConfiguration {
 		
 		YamlConfiguration newConfig = new YamlConfiguration();
 		
-		newConfig.set("SQLdriver", 		SQLdriver);
+		newConfig.set("configpath", 		configpath);
 		newConfig.set("SQLurl", 		SQLurl);
 		newConfig.set("SQLuser", 		SQLuser);
 		newConfig.set("SQLpass", 		SQLpass);
-		newConfig.set("SQLprefix", 		SQLprefix);
+		newConfig.set("usemySQL", 		usemySQL);
 		newConfig.set("tax",				tax);
 		newConfig.set("Wages",				wage);
 		newConfig.set("StockMarket",		pub);

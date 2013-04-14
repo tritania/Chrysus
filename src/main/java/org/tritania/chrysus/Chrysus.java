@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Erik Wilson <erikwilson@magnorum.com>
+ * Copyright 2012-2013 Erik Wilson <erikwilson@magnorum.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,19 +38,25 @@ public class Chrysus extends JavaPlugin
 	public static String pluginName = "Chrysus";
 	
 	public 	Configuration 		config;
-	//need a database call here
+	public  ChrysusStorage		storage;
 	private ChrysusListener 	listener;
 	private ChrysusCommand		command;
-	public 	Logger				log;
+	public static final Logger logger = Logger.getLogger("Minecraft");
+	
+	public static String PREFIX;
+	public static boolean usemySQL;
+	public static String SQLuser;
+	public static String SQLpass;
+	public static String SQLurl;
+	public static String configpath;
 	
 	public void onLoad() 
-	{
-		this.log 	= this.getLogger();
-		
+	{	
 		copyConfig("config.yml");
 		File configurationFile = new File(getDataFolder(), "config.yml");
-		this.config = new Configuration(configurationFile, log, this);
+		this.config = new Configuration(configurationFile, logger, this);
 		
+		this.storage  = new ChrysusStorage(this);
 		this.listener = new ChrysusListener(this);
 		this.command  = new ChrysusCommand(this);
 	}
@@ -61,18 +67,24 @@ public class Chrysus extends JavaPlugin
 		this.listener.register();
 		
 		getCommand("chrysus").setExecutor(command);
+		
+		SQLuser    = this.config.SQLuser;
+		SQLpass    = this.config.SQLpass;
+		SQLurl     = this.config.SQLurl;
+		configpath = this.config.configpath;
+		usemySQL   = this.config.usemySQL;
 	}
 
 	public void onDisable()
 	{
-
+		ChrysusStorage.closeConnection();
 	}
 
 	public void reload()
 	{
 	this.config.load();
 	
-	this.log.info(getDescription().getVersion() + " reloaded.");
+	this.logger.info(getDescription().getVersion() + " reloaded.");
 	}
 
 	public boolean copyConfig(String filename)
@@ -103,7 +115,7 @@ public class Chrysus extends JavaPlugin
 		}
 		catch(Exception e)
 		{
-			log.warning("Unable to copy " + filename + " to the plugin directory.");
+			logger.warning("Unable to copy " + filename + " to the plugin directory.");
 			return false;
 		}
 	}

@@ -20,3 +20,13 @@ InitialCapitalC: 4000
 InitialCapitalP: 6000
 # Is the web interface active
 WebInterface: true
+#
+configpath: null
+#
+SQLurl: null
+#
+SQLuser: null
+#
+SQLpass: null
+#use mysql?
+usemySQL: true
