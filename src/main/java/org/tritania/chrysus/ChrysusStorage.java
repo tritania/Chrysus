@@ -16,6 +16,7 @@
  */
 package org.tritania.chrysus;
 
+/*Start Imports*/
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -28,26 +29,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.tritania.chrysus.util.Log;
+import org.tritania.chrysus.Chrysus;
+/*End Imports*/
 
 public class ChrysusStorage 
 {
-	private Logger log;
-	private Chrysus plugin;
-	
-	public ChrysusStorage(Chrysus plugin)
-	{
-		this.plugin = plugin;
-	}
+	public Chrysus chrysus;
+
+    public ChrysusStorage(Chrysus chrysus)
+    {
+        this.chrysus = chrysus;
+    }
 	
 	private static Connection conn = null;
 
 	private final static String ITEM_IO = ""; 
 	private final static String PLAYER_IO = "CREATE TABLE `PLAYER_IO` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-	+ "`player` INTEGER(11) NOT NULL,"
-	+ "`company` VARCHAR(30) NOT NULL,"
-	+ "`balance` INTEGER(11) NOT NULL"
+	+ "`player` VARCHAR(16) NOT NULL,"
+	+ "`company` VARCHAR(30) NOT NULL DEFAULT 'chrysus'," //later change to server veriable to be put into config
+	+ "`balance` INTEGER(11) NOT NULL DEFAULT '1000'"
 	+ ");"; 
 	
 	private final static String COMPANY_IO = ""; //I think you ge the picture by now
@@ -65,13 +68,13 @@ public class ChrysusStorage
 			
 		catch (SQLException ex) 
 		{ 
-			Chrysus.logger.severe("SQL exception on initialize :");
-        	Chrysus.logger.severe("  " + ex.getMessage());
+			Log.severe("SQL exception on initialize :");
+        	Log.severe("  " + ex.getMessage());
 		}
         catch (ClassNotFoundException ex) 
         { 
-			Chrysus.logger.severe("You need the MySQL library. :");
-        	Chrysus.logger.severe("  " + ex.getMessage());
+			Log.severe("You need the MySQL library. :");
+        	Log.severe("  " + ex.getMessage());
 		}
         
         if (!TableExists()) 
@@ -97,8 +100,8 @@ public class ChrysusStorage
         } 
         catch (SQLException ex) 
         {
-            Chrysus.logger.severe(" Table Check Exception :");
-        	Chrysus.logger.severe("  " + ex.getMessage());
+            Log.severe(" Table Check Exception :");
+        	Log.severe("  " + ex.getMessage());
             return false;
         } 
         finally 
@@ -109,8 +112,8 @@ public class ChrysusStorage
                     rs.close();
             } catch (SQLException ex) 
             { 
-					Chrysus.logger.severe(" Table Check SQL Exception (on closing) :");
-					Chrysus.logger.severe("  " + ex.getMessage());
+					Log.severe(" Table Check SQL Exception (on closing) :");
+					Log.severe("  " + ex.getMessage());
 			}
         }
     }
@@ -120,7 +123,7 @@ public class ChrysusStorage
 		Statement st = null;
     	try 
     	{
-			Chrysus.logger.info(" Creating Database...");
+			Log.info(" Populating Database...");
     		Connection conn = getConnection();
     		st = conn.createStatement();
     		st.executeUpdate(PLAYER_IO);
@@ -129,8 +132,8 @@ public class ChrysusStorage
 		}
 		catch (SQLException ex) 
     	{ 
-    		Chrysus.logger.severe(" Create Table Exception :");
-    		Chrysus.logger.severe("  " + ex.getMessage());
+    		Log.severe(" Create Table Exception :");
+    		Log.severe("  " + ex.getMessage());
     	}
     	finally 
     	{
@@ -142,8 +145,8 @@ public class ChrysusStorage
     		} 
     		catch (SQLException ex) 
     		{
-    			Chrysus.logger.severe(" Could not create the table (on close) :");
-    			Chrysus.logger.severe("  " + ex.getMessage());
+    			Log.severe(" Could not create the table (on close) :");
+    			Log.severe("  " + ex.getMessage());
     		}
     	} 
 	 }
@@ -162,8 +165,8 @@ public class ChrysusStorage
 				} 
 			catch (SQLException ex) 
 			{ 
-					Chrysus.logger.severe("Error on Connection close :");
-					Chrysus.logger.severe("  " + ex.getMessage());
+					Log.severe("Error on Connection close :");
+					Log.severe("  " + ex.getMessage());
 			}
 		}
     }
@@ -171,7 +174,6 @@ public class ChrysusStorage
     public static Connection getConnection()
 	{
 		if(conn == null) conn = initialize();
-		if(Chrysus.usemySQL) 
 		{
 			try 
 			{
@@ -179,21 +181,11 @@ public class ChrysusStorage
 			} 
 			catch (SQLException ex) 
 			{
-				Chrysus.logger.severe("Failed to check SQL status :");
-				Chrysus.logger.severe("  " + ex.getMessage());
+				Log.severe("Failed to check SQL status :");
+				Log.severe("  " + ex.getMessage());
 		    }
 		}
 		return conn;
-	}
-	
-	public static void cleanData(String playername)
-	{
-		
-	}
-    
-    public static void sell(String playername, String items)
-	{
-		
 	}
 }
 

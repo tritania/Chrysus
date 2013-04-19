@@ -14,114 +14,71 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 package org.tritania.chrysus;
 
-//IMPORTS
+/*Start Imports*/
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.lang.String;
-import java.util.Date;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.CommandSender;
-import java.util.logging.Logger;
-//END IMPORTS
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+
+import org.tritania.chrysus.command.*;
+import org.tritania.chrysus.util.Log;
+import org.tritania.chrysus.util.Message;
+import org.tritania.chrysus.util.Utils;
+/*End Imports*/
 
 public class Chrysus extends JavaPlugin
 {
-	public static String pluginName = "Chrysus";
+	public Configuration config;
 	
-	public 	Configuration 		config;
-	public  ChrysusStorage		storage;
-	private ChrysusListener 	listener;
-	private ChrysusCommand		command;
-	public static final Logger logger = Logger.getLogger("Minecraft");
-	
-	public static boolean usemySQL;
-	public static String SQLuser;
-	public static String SQLpass;
 	public static String SQLurl;
-	public static String configpath;
+	public static String SQLpass;
+	public static String SQLuser;
 	
-	public void onLoad() 
-	{	
-		copyConfig("config.yml");
-		File configurationFile = new File(getDataFolder(), "config.yml");
-		this.config = new Configuration(configurationFile, logger, this);
-		
-		this.storage  = new ChrysusStorage(this);
-		this.listener = new ChrysusListener(this);
-		this.command  = new ChrysusCommand(this);
+	public void onLoad()
+	{
+		config = new Configuration(new File(getDataFolder(), "config.yml"));
 	}
 	
-	public void onEnable() 
+	public void onEnable()
 	{
-		this.config.load();
-		this.listener.register();
+		PluginManager pm;
+		Plugin p;
 		
-		getCommand("chrysus").setExecutor(command);
+		Log.init(getLogger());
+		Message.init(getDescription().getName());
+		
+		pm = getServer().getPluginManager();
+		config.load();
+		
+		pm.registerEvents(new ChrysusListener(this), this);
+		
+		getCommand("csell").setExecutor(new CSell(this));
+		getCommand("cbuy").setExecutor(new CBuy(this));
+		getCommand("cdesc").setExecutor(new CDesc(this));
+		getCommand("cclean").setExecutor(new CClean(this));
+		getCommand("cinc").setExecutor(new CInc(this));
+		getCommand("cisk").setExecutor(new CIsk(this));
 		
 		SQLuser    = this.config.SQLuser;
 		SQLpass    = this.config.SQLpass;
 		SQLurl     = this.config.SQLurl;
-		ChrysusStorage.getConnection();
+		
+		ChrysusStorage.initialize();
 	}
-
+	
 	public void onDisable()
 	{
-		ChrysusStorage.closeConnection();
+			ChrysusStorage.closeConnection();
 	}
-
+	
 	public void reload()
 	{
-	this.config.load();
-	
-	this.logger.info(getDescription().getVersion() + " reloaded.");
-	}
-
-	public boolean copyConfig(String filename)
-	{
-		File sourceFile;
-		File destinationFile;
-		try
-		{
-			if(!getDataFolder().exists())
-				getDataFolder().mkdirs();
-
-			destinationFile = new File(getDataFolder(), filename);
-
-			if(!destinationFile.createNewFile())
-				return false;
-
-			InputStream inputStream = getClass().getResourceAsStream("/" +  filename);
-			OutputStream out = new FileOutputStream(destinationFile);
-			byte buffer[] = new byte[1024];
-			int length;
-
-			while((length = inputStream.read(buffer)) > 0)
-				out.write(buffer, 0, length);
-
-			out.close();
-			inputStream.close();
-			return true;
-		}
-		catch(Exception e)
-		{
-			logger.warning("Unable to copy " + filename + " to the plugin directory.");
-			return false;
-		}
+		config.load();
 	}
 }
-
-		
-
-
-
-
-

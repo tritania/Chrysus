@@ -17,125 +17,62 @@
 
 package org.tritania.chrysus;
 
+/*Start Imports*/
 import java.io.File;
-import java.lang.Integer;
-import java.lang.Double;
-import java.lang.String;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.Map;
-import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import org.tritania.chrysus.util.Log;
+/*End Imports*/
 
-public class Configuration extends YamlConfiguration {
-
-		private File config;
-		private Logger log;
-		private Chrysus plugin;
-
-		public String SQLurl;
-		public String SQLuser;
-		public String SQLpass;
-		
-		public boolean	tax;	//tax
-		public boolean	wage;	//wages
-		public boolean	pub;	//are stocks being traded
-		public double	tr;		//tax rates
-		public double	pay;	//cost of wages
-		public double	ipo;	//inital public offering (percentage)
-		public int		cfc; 	//company founding costs
-		public int		icc;	//inital company capital
-		public int		ipc;	//inital player capital 
-		public boolean	wi; 
-		
-
-
-	public Configuration(File config, Logger log, Chrysus plugin) {
+public class Configuration extends YamlConfiguration
+{
+	private File file;
 	
-		this.config		= config;
-		this.log		= log;
-		this.plugin		= plugin;
+public static String SQLurl;
+	public static String SQLpass;
+	public static String SQLuser;
 	
-        SQLuser     = null;
-		SQLpass     = null;
-		SQLurl      = "jdbc:mysql://localhost:3306/chrysus";
+	public Configuration(File file)
+	{
+		this.file = file;
 		
-		tax		= true;
-		wage	= true;
-		pub		= true;
-		tr		= 1.10;
-		pay		= 11.25;
-		ipo		= 0.10;
-		cfc		= 12000;
-		icc		= 4000;
-		ipc		= 6000;
-		wi		= true;
+		SQLuser = "root";
+		SQLpass = "1234";
+		SQLurl  = "jdbc:mysql://localhost:3306/chrysus";
 	}
-
-	public void load() {
-		
-		boolean defaults = false;
 	
-		try {
-			super.load(config);
+	public void load()
+	{
+		try 
+		{
+            super.load(file);
+		} 
+        catch (Exception e) 
+		{
+            Log.warning("Unable to load: %s", file.toString());
 		}
-		catch(Exception e) {
-			log.warning("cannot acces config, using preset values.");
-			defaults = true;
-		}
+		
+		SQLuser = getString("user", SQLuser);
+		SQLurl  = getString("url", SQLurl);
+		SQLpass = getString("pass", SQLpass);
+		
+		if (!file.exists())
+            save();
+	}
 	
-		SQLurl		= getString("SQLurl", SQLurl);
-		SQLuser		= getString("SQLuser", SQLuser);
-		SQLpass		= getString("SQLpass", SQLpass);
-		tax		= getBoolean("Tax",				tax);
-		wage	= getBoolean("Wages",			wage);
-		pub		= getBoolean("StockMarket",		pub);
-		tr		= getDouble("TaxRate",			tr);
-		pay		= getDouble("MinimumWage",		pay);	
-		ipo		= getDouble("IPO",				ipo);
-		cfc		= getInt("FoundingCost",		cfc);
-		icc		= getInt("InitialCapitalC",		icc);
-		ipc		= getInt("InitialCapitalP",		ipc);
-		wi		= getBoolean("WebInterface",	wi);
-	
-		if(defaults)
-			save();
-		
-		}
-	
-	public void save() {
-		
-		YamlConfiguration newConfig = new YamlConfiguration();
-		
-		newConfig.set("SQLurl", 		SQLurl);
-		newConfig.set("SQLuser", 		SQLuser);
-		newConfig.set("SQLpass", 		SQLpass);
-		newConfig.set("tax",				tax);
-		newConfig.set("Wages",				wage);
-		newConfig.set("StockMarket",		pub);
-		newConfig.set("TaxRate",			tr);
-		newConfig.set("MinimumWage",		pay);
-		newConfig.set("IPO",				ipo);
-		newConfig.set("FoundingCost",		cfc);
-		newConfig.set("InitialCapitalC",	icc);
-		newConfig.set("InitialCapitalP",	ipc);
-		newConfig.set("WebInterface",		wi);
-		
-		File ConfigurationFile = new File(plugin.getDataFolder(), "config.yml");
-		
-		try {
-			newConfig.save(ConfigurationFile);
-		}
-		catch(Exception e) {
-			log.warning("Could not write config.yml");
-		}
+	public void save() 
+	{
+		set("user", SQLuser);
+		set("url", SQLurl);
+		set("pass", SQLpass);
+		try 
+		{
+			super.save(file);
+        } 
+        catch (Exception e) 
+        {
+			Log.warning("Unable to save: %s", file.toString());
+        }
 	}
 }
-		
-		
-
-	
-
-		
