@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2013 Erik Wilson <erikwilson@magnorum.com>
+ * Copyright 2012-2014 Erik Wilson <erikwilson@magnorum.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +23,19 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.tritania.chrysus.util.Log;
+import org.tritania.chrysus.util.BlockTranslator;
+import org.tritania.chrysus.Chrysus;
 /*End Imports*/
 
 public class Configuration extends YamlConfiguration
 {
 	private File file;
 	
-public static String SQLurl;
+    public static String SQLurl;
 	public static String SQLpass;
 	public static String SQLuser;
-	
+    public static int[] savedPrices = new int[Chrysus.translator.totalBlocks()]; //how is this static?    
+    	
 	public Configuration(File file)
 	{
 		this.file = file;
@@ -40,8 +43,12 @@ public static String SQLurl;
 		SQLuser = "root";
 		SQLpass = "1234";
 		SQLurl  = "jdbc:mysql://localhost:3306/chrysus";
+        for(int i = 0; i < savedPrices.length; i++)
+        {
+            savedPrices[i] = 1; //set default values to 1
+        }
 	}
-	
+	 
 	public void load()
 	{
 		try 
@@ -56,9 +63,16 @@ public static String SQLurl;
 		SQLuser = getString("user", SQLuser);
 		SQLurl  = getString("url", SQLurl);
 		SQLpass = getString("pass", SQLpass);
+        
+        for(int i = 0; i < savedPrices.length; i++)
+        {
+            savedPrices[i] = getInt(Chrysus.translator.getItem(i), savedPrices[i]);
+        }
 		
 		if (!file.exists())
             save();
+        
+        
 	}
 	
 	public void save() 
@@ -66,6 +80,10 @@ public static String SQLurl;
 		set("user", SQLuser);
 		set("url", SQLurl);
 		set("pass", SQLpass);
+        for(int i = 0; i < savedPrices.length; i++)
+        {
+            set(Chrysus.translator.getItem(i), savedPrices[i]);
+        }
 		try 
 		{
 			super.save(file);

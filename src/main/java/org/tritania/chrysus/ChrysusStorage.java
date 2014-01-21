@@ -45,23 +45,18 @@ public class ChrysusStorage
 	
 	private static Connection conn = null;
 
-	private final static String ITEM_IO = ""; 
-	private final static String PLAYER_IO = "CREATE TABLE `PLAYER_IO` ("
+	private final static String PRICES = "CREATE TABLE `PRICES` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-	+ "`player` VARCHAR(16) NOT NULL,"
-	+ "`company` VARCHAR(30) NOT NULL DEFAULT 'chrysus'," //later change to server veriable to be put into config
-	+ "`balance` INTEGER(11) NOT NULL DEFAULT '1000'"
+	+ "`items` VARCHAR(16) NOT NULL,"
+	+ "`price` INTEGER(11) NOT NULL"
 	+ ");"; 
-	
-	private final static String COMPANY_IO = ""; //I think you ge the picture by now
-	/*The Above are strings for the table creation querys*/
 
 	public static Connection initialize()
 	{
 		try
 		{
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection(Chrysus.SQLurl, Chrysus.SQLuser, Chrysus.SQLpass);
+				conn = DriverManager.getConnection(Configuration.SQLurl, Configuration.SQLuser, Configuration.SQLpass);
 				conn.setAutoCommit(false);
 		}
 
@@ -93,7 +88,7 @@ public class ChrysusStorage
             Connection conn = getConnection();
 
             DatabaseMetaData dbm = conn.getMetaData();
-            rs = dbm.getTables(null, null, "PLAYER_IO", null);
+            rs = dbm.getTables(null, null, "PRICES", null);
             if (!rs.next())
                 return false;
             return true;
@@ -126,7 +121,7 @@ public class ChrysusStorage
 			Log.info(" Populating Database...");
     		Connection conn = getConnection();
     		st = conn.createStatement();
-    		st.executeUpdate(PLAYER_IO);
+    		st.executeUpdate(PRICES);
     		conn.commit();
     		
 		}
@@ -187,5 +182,38 @@ public class ChrysusStorage
 		}
 		return conn;
 	}
+    
+    public static void Store(String query)
+    {
+        Statement st = null;
+    	try 
+    	{
+    		Connection conn = getConnection();
+    		st = conn.createStatement();
+    		st.executeUpdate(query);
+    		conn.commit();
+    		
+		}
+		catch (SQLException ex) 
+    	{ 
+    		Log.severe(" SQL Exception:");
+    		Log.severe("  " + ex.getMessage());
+    	}
+    	finally 
+    	{
+    		try {
+    			if (st != null) 
+    			{
+    				st.close();
+    			}
+    		} 
+    		catch (SQLException ex) 
+    		{
+    			Log.severe(" SQL Exception:");
+    			Log.severe("  " + ex.getMessage());
+    		}
+    	} 
+    }
 }
+
 
