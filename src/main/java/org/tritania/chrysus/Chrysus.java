@@ -33,11 +33,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import org.tritania.chrysus.command.*;
+
 import org.tritania.chrysus.util.Log;
 import org.tritania.chrysus.util.Message;
 import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.Configuration;
 import org.tritania.chrysus.ChrysusStorage;
+import org.tritania.chrysus.util.ChrysusInv;
+
+
 /*End Imports*/
 
 public class Chrysus extends JavaPlugin
@@ -64,6 +69,14 @@ public class Chrysus extends JavaPlugin
 		pm.registerEvents(new ChrysusListener(this), this);
         translator = new BlockTranslator(this);
         ChrysusStorage.initialize();
+        
+        getCommand("cbuy").setExecutor(new Buy(this));
+        getCommand("csell").setExecutor(new Sell(this));
+        getCommand("cset").setExecutor(new Set(this));
+        getCommand("cinfo").setExecutor(new OrderInfo(this));
+        
+        //debug testing only
+        ChrysusStorage.getData("SELECT * FROM PRICES");
 		
 	}
 	
@@ -78,3 +91,12 @@ public class Chrysus extends JavaPlugin
         translator = new BlockTranslator(this);
 	}
 }
+
+/*
+ * Price modififer based on the amount currently in the world (exclude placed blocks)
+ * ChrysusEcon.java will be the main economy driver
+ * SQL returning
+ * Hashmaps for storing most of the data (probably)
+ * Figure out exactly how to make the economy work well
+ * MCscoreboard support
+ */

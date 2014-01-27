@@ -16,15 +16,15 @@
  */
 
 package org.tritania.chrysus.util;
-
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.Material;
 
 import org.tritania.chrysus.Chrysus;
 
 public class BlockTranslator 
 {
 	public Chrysus plugin;
-    private static String[] items = 
+    private static String[] items =  //stored mainly for config values
     {
         "STONE",
         "GRASS",
@@ -341,6 +341,12 @@ public class BlockTranslator
     public static String getItem(int a)
     {
         return items[a];
+    }
+    
+    public static Material getItem(String itemIn)
+    {
+        Material item = Material.getMaterial(itemIn);
+        return item;
     }
     
     public static int totalBlocks()

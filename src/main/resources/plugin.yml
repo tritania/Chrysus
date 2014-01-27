@@ -32,4 +32,12 @@ commands:
     description: Gives general chrysus information
     aliases: []
     usage: /<command> [help]
+  cset:
+    description: Gives op's the ability to set a players wallet value
+    aliases: []
+    usage: /command [player | block] [value]
+  cinfo:
+    description: Gives player information on differing values
+    aliases: []
+    usage: /command [block | wallet]
     
