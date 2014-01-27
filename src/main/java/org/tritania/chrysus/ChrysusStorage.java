@@ -216,7 +216,7 @@ public class ChrysusStorage
     	} 
     }
     
-    public static void getData(String query)
+    public static ResultSet getData(String query)
     {
         Statement st = null;
     	try 
@@ -224,13 +224,6 @@ public class ChrysusStorage
     		Connection conn = getConnection();
             st = conn.createStatement();
             results = st.executeQuery(query);
-            
-            if (results.next())
-            {
-                Log.severe(results.getString(1));
-                Log.severe(results.getString(2));
-                Log.severe(results.getString(3));
-            }
     		
 		}
 		catch (SQLException ex) 
@@ -251,7 +244,8 @@ public class ChrysusStorage
     			Log.severe(" SQL Exception:");
     			Log.severe("  " + ex.getMessage());
     		}
-    	} 
+    	}
+        return results; 
     }
     
 }
