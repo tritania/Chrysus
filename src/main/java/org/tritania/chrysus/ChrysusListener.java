@@ -17,11 +17,17 @@
  
 package org.tritania.chrysus;
 
+import java.util.*;
+import java.sql.*;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.tritania.chrysus.util.Log;
 
 
 public class ChrysusListener implements Listener
@@ -44,6 +50,21 @@ public class ChrysusListener implements Listener
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		//will alert player if any of his orders have been filled
+        Player player = event.getPlayer();
+        String playerId = player.getUniqueId().toString();
+		String query = "SELECT value FROM WALLET WHERE player='" + playerId + "';";
+        query.concat(playerId+"';");
+        ArrayList<String> data = ChrysusStorage.getData(query);
+            if (data.get(0) == "END_DATA_STREAM")
+            {
+                Log.severe(query);
+                String queryind = "INSERT INTO WALLET (player, value) VALUES ('" + playerId + "', 500)";
+                ChrysusStorage.Store(queryind);
+            }
+            else 
+            {
+                int value = 0;
+                value = Integer.parseInt(data.get(0));
+            }
 	}
 }

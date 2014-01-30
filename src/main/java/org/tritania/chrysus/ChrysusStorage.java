@@ -51,6 +51,26 @@ public class ChrysusStorage
 	+ "`items` VARCHAR(16) NOT NULL,"
 	+ "`price` INTEGER(11) NOT NULL"
 	+ ");"; 
+    
+    private final static String WALLET = "CREATE TABLE `WALLET` ("
+	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+	+ "`player` VARCHAR(36) NOT NULL,"
+	+ "`value` INTEGER(11) NOT NULL,"
+    + "`OrderID1` INTEGER(11) DEFAULT 0,"
+    + "`OrderID2` INTEGER(11) DEFAULT 0,"
+    + "`OrderID3` INTEGER(11) DEFAULT 0,"
+    + "`OrderID4` INTEGER(11) DEFAULT 0,"
+    + "`OrderID5` INTEGER(11) DEFAULT 0"
+	+ ");"; 
+    
+    private final static String ORDERS = "CREATE TABLE `PRICES` ("
+	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+	+ "`item` VARCHAR(16) NOT NULL,"
+	+ "`price` INTEGER(11) NOT NULL,"
+	+ "`type` INTEGER(11) NOT NULL," //0 for sell 1 for buy
+	+ "`status` INTEGER(11) NOT NULL," //0 for still on market 1 for sold/bought
+	+ "`OrderID` INTEGER(11) NOT NULL"
+	+ ");"; 
 
 	public static Connection initialize()
 	{
@@ -123,6 +143,8 @@ public class ChrysusStorage
     		Connection conn = getConnection();
     		st = conn.createStatement();
     		st.executeUpdate(PRICES);
+    		st.executeUpdate(WALLET);
+    		st.executeUpdate(ORDERS);
     		conn.commit();
     		
 		}
@@ -197,7 +219,7 @@ public class ChrysusStorage
 		}
 		catch (SQLException ex) 
     	{ 
-    		Log.severe(" SQL Exception:");
+    		Log.severe(" SQL Exception 1:");
     		Log.severe("  " + ex.getMessage());
     	}
     	finally 
@@ -210,25 +232,27 @@ public class ChrysusStorage
     		} 
     		catch (SQLException ex) 
     		{
-    			Log.severe(" SQL Exception:");
+    			Log.severe(" SQL Exception 2:");
     			Log.severe("  " + ex.getMessage());
     		}
     	} 
     }
     
-    public static ResultSet getData(String query)
-    {
+    public static ArrayList<String> getData(String query)
+    {   
+        ArrayList<String> resultsout = new ArrayList<String>();
         Statement st = null;
     	try 
     	{
     		Connection conn = getConnection();
             st = conn.createStatement();
             results = st.executeQuery(query);
+            resultsout = convertResults(results);
     		
 		}
 		catch (SQLException ex) 
     	{ 
-    		Log.severe(" SQL Exception:");
+    		Log.severe(" SQL Exception 3:");
     		Log.severe("  " + ex.getMessage());
     	}
     	finally 
@@ -241,11 +265,42 @@ public class ChrysusStorage
     		} 
     		catch (SQLException ex) 
     		{
-    			Log.severe(" SQL Exception:");
+    			Log.severe(" SQL Exception 4:");
     			Log.severe("  " + ex.getMessage());
     		}
     	}
-        return results; 
+        return resultsout; 
+    }
+    
+  
+  
+    public static ArrayList<String> convertResults(ResultSet resin)
+    {
+        ArrayList<String> resultsout = new ArrayList<String>();
+        int i=0;
+        try 
+        {
+            while(resin.next())
+            {
+                try
+                {
+                    resultsout.add(resin.getString(i));
+                    i++;
+                }
+                catch(SQLException ex)
+                {
+                    Log.severe(" SQL Exception 5:");
+                    Log.severe("  " + ex.getMessage());
+                }
+            }
+            resultsout.add("END_DATA_STREAM");
+        }
+        catch(SQLException ex)
+        {
+            Log.severe(" SQL Exception 5:");
+            Log.severe("  " + ex.getMessage());
+        }
+        return resultsout;
     }
     
 }

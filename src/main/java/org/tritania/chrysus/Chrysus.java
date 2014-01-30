@@ -41,6 +41,7 @@ import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.Configuration;
 import org.tritania.chrysus.ChrysusStorage;
 import org.tritania.chrysus.util.ChrysusInv;
+import org.tritania.chrysus.ChrysusEconomy;
 
 
 /*End Imports*/
@@ -67,16 +68,12 @@ public class Chrysus extends JavaPlugin
 		config.load();
 		
 		pm.registerEvents(new ChrysusListener(this), this);
-        translator = new BlockTranslator(this);
         ChrysusStorage.initialize();
         
         getCommand("cbuy").setExecutor(new Buy(this));
         getCommand("csell").setExecutor(new Sell(this));
         getCommand("cset").setExecutor(new Set(this));
         getCommand("cinfo").setExecutor(new OrderInfo(this));
-        
-        //debug testing only
-        ChrysusStorage.getData("SELECT * FROM PRICES");
 		
 	}
 	
