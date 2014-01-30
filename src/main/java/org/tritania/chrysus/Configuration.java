@@ -25,6 +25,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.tritania.chrysus.util.Log;
 import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.Chrysus;
+import org.tritania.chrysus.ChrysusEconomy;
+import org.tritania.chrysus.ChrysusStorage;
 /*End Imports*/
 
 public class Configuration extends YamlConfiguration
@@ -34,7 +36,7 @@ public class Configuration extends YamlConfiguration
     public static String SQLurl;
 	public static String SQLpass;
 	public static String SQLuser;
-    public static int[] savedPrices = new int[Chrysus.translator.totalBlocks()]; //how is this static?    
+    public static int[] savedPrices = new int[Chrysus.translator.totalBlocks()]; //array list should be used instead
     	
 	public Configuration(File file)
 	{
@@ -66,12 +68,12 @@ public class Configuration extends YamlConfiguration
         
         for(int i = 0; i < savedPrices.length; i++)
         {
-            savedPrices[i] = getInt(Chrysus.translator.getItem(i), savedPrices[i]);
+            savedPrices[i] = getInt(Chrysus.translator.getItem(i), savedPrices[i]); //gets data from config
+            ChrysusEconomy.setPrices(Chrysus.translator.getItemInt(i), savedPrices[i]);
+            
         }
-		
 		if (!file.exists())
             save();
-        
         
 	}
 	
@@ -80,6 +82,23 @@ public class Configuration extends YamlConfiguration
 		set("user", SQLuser);
 		set("url", SQLurl);
 		set("pass", SQLpass);
+        for(int i = 0; i < savedPrices.length; i++)
+        {
+            set(Chrysus.translator.getItem(i), savedPrices[i]);
+            ChrysusEconomy.setPrices(Chrysus.translator.getItemInt(i), savedPrices[i]);
+        }
+		try 
+		{
+			super.save(file);
+        } 
+        catch (Exception e) 
+        {
+			Log.warning("Unable to save: %s", file.toString());
+        }
+	}
+    
+    public void savePrices()
+    {
         for(int i = 0; i < savedPrices.length; i++)
         {
             set(Chrysus.translator.getItem(i), savedPrices[i]);
@@ -92,5 +111,5 @@ public class Configuration extends YamlConfiguration
         {
 			Log.warning("Unable to save: %s", file.toString());
         }
-	}
+    }
 }

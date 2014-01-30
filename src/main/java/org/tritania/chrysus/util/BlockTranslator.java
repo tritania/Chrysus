@@ -349,6 +349,12 @@ public class BlockTranslator
         return item;
     }
     
+    public static Material getItemInt(int in)
+    {
+        Material item = getItem(items[in]);
+        return item;
+    }
+    
     public static int totalBlocks()
     {
         return items.length;

@@ -23,6 +23,7 @@ import java.sql.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -70,4 +71,13 @@ public class ChrysusListener implements Listener
                 ChrysusEconomy.activateWallet(player, value);
             }
 	}
+    
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerLeave(PlayerQuitEvent event)
+    {
+        Player player = event.getPlayer();
+        ChrysusEconomy.deactivateWallet(player);
+    }
+    
+    
 }

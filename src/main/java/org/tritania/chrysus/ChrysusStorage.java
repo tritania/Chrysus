@@ -46,12 +46,6 @@ public class ChrysusStorage
 	private static Connection conn = null;
     private static ResultSet results = null;
 
-	private final static String PRICES = "CREATE TABLE `PRICES` ("
-	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-	+ "`items` VARCHAR(16) NOT NULL,"
-	+ "`price` INTEGER(11) NOT NULL"
-	+ ");"; 
-    
     private final static String WALLET = "CREATE TABLE `WALLET` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`player` VARCHAR(36) NOT NULL,"
@@ -63,7 +57,7 @@ public class ChrysusStorage
     + "`OrderID5` INTEGER(11) DEFAULT 0"
 	+ ");"; 
     
-    private final static String ORDERS = "CREATE TABLE `PRICES` ("
+    private final static String ORDERS = "CREATE TABLE `ORDERS` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`item` VARCHAR(16) NOT NULL,"
 	+ "`price` INTEGER(11) NOT NULL,"
@@ -109,7 +103,7 @@ public class ChrysusStorage
             Connection conn = getConnection();
 
             DatabaseMetaData dbm = conn.getMetaData();
-            rs = dbm.getTables(null, null, "PRICES", null);
+            rs = dbm.getTables(null, null, "WALLET", null);
             if (!rs.next())
                 return false;
             return true;
@@ -142,7 +136,6 @@ public class ChrysusStorage
 			Log.info(" Populating Database...");
     		Connection conn = getConnection();
     		st = conn.createStatement();
-    		st.executeUpdate(PRICES);
     		st.executeUpdate(WALLET);
     		st.executeUpdate(ORDERS);
     		conn.commit();

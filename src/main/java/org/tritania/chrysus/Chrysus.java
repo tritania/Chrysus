@@ -79,11 +79,13 @@ public class Chrysus extends JavaPlugin
 	
 	public void onDisable()
 	{
+        config.savePrices();
         ChrysusStorage.closeConnection();
     }
     
 	public void reload()
 	{
+        config.savePrices();
 		config.load();
         translator = new BlockTranslator(this);
 	}
@@ -92,5 +94,4 @@ public class Chrysus extends JavaPlugin
 /*
  * Price modififer based on the amount currently in the world (exclude placed blocks)
  * MCscoreboard support
- * Command to reload the config to update prices if they needed to be set en mass 
  */
