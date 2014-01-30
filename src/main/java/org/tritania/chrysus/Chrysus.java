@@ -91,9 +91,6 @@ public class Chrysus extends JavaPlugin
 
 /*
  * Price modififer based on the amount currently in the world (exclude placed blocks)
- * ChrysusEcon.java will be the main economy driver
- * SQL returning
- * Hashmaps for storing most of the data (probably)
- * Figure out exactly how to make the economy work well
  * MCscoreboard support
+ * Command to reload the config to update prices if they needed to be set en mass 
  */

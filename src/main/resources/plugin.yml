@@ -40,4 +40,8 @@ commands:
     description: Gives player information on differing values
     aliases: []
     usage: /command [block | wallet]
+  creload:
+    description: Gives admins the ability to reload the config price values
+    aliases: []
+    usage: /command []
     

@@ -29,6 +29,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.tritania.chrysus.util.Log;
 
+import org.tritania.chrysus.ChrysusEconomy;
+
 
 public class ChrysusListener implements Listener
 {
@@ -53,18 +55,19 @@ public class ChrysusListener implements Listener
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
 		String query = "SELECT value FROM WALLET WHERE player='" + playerId + "';";
-        query.concat(playerId+"';");
         ArrayList<String> data = ChrysusStorage.getData(query);
             if (data.get(0) == "END_DATA_STREAM")
             {
                 Log.severe(query);
                 String queryind = "INSERT INTO WALLET (player, value) VALUES ('" + playerId + "', 500)";
                 ChrysusStorage.Store(queryind);
+                ChrysusEconomy.activateWallet(player, 500);
             }
             else 
             {
                 int value = 0;
                 value = Integer.parseInt(data.get(0));
+                ChrysusEconomy.activateWallet(player, value);
             }
 	}
 }
