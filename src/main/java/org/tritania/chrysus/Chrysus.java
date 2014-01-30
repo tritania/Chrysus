@@ -15,13 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-/**
- * Will need to design a better block number indication system, look into naming system
- * has to be an api call for that, config prices need to go somewhere need a 
- * new class to handle data/parsing
- * 
- */ 
 package org.tritania.chrysus;
 
 /*Start Imports*/

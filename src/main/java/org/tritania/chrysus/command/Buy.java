@@ -31,6 +31,7 @@ import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
 import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.util.ChrysusInv;
+import org.tritania.chrysus.ChrysusEconomy;
 /*End Imports*/
 
 public class Buy implements CommandExecutor 
@@ -57,8 +58,16 @@ public class Buy implements CommandExecutor
             Player player = (Player) sender;
             Material bought = BlockTranslator.getItem(args[0]);
             int amount = Integer.parseInt(args[1]);
-            
-            ChrysusInv.addItems(player, bought, amount);
+            int cost = ChrysusEconomy.getPrice(bought, amount);
+            if(ChrysusEconomy.getWalletValue(player) > cost)
+            {
+                ChrysusEconomy.removeMoney(player, cost);
+                ChrysusInv.addItems(player, bought, amount);
+            }
+            else 
+            {
+                Message.info(sender, "You don't have enough money for that");
+            }
             
         }
         

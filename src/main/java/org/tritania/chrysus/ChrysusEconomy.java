@@ -34,7 +34,7 @@ import org.tritania.chrysus.ChrysusStorage;
 public class ChrysusEconomy
 {
     private static HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); //stores player UUID and wallet value in int
-    private static HashMap<Material, Integer> prices = new HashMap<Material, Integer>(); //needs getters setters
+    private static HashMap<Material, Integer> prices = new HashMap<Material, Integer>(); 
     
 	private Chrysus plugin;
 
@@ -50,28 +50,28 @@ public class ChrysusEconomy
     
     public static int getWalletValue(Player player)
     {
-        String playerId = player.getUniqueId().toString();
-		String query = "SELECT value FROM WALLET WHERE player='" + playerId + "';";
-        ArrayList<String> data = ChrysusStorage.getData(query);
-        int value = 0;
-        value = Integer.parseInt(data.get(0));
+        UUID playerId = player.getUniqueId();
+        int balance = wallet.get(playerId);
         
-        return value;
+        return balance;
     }
     
     public static void addMoney(Player player, int amount)
     {
-        String playerId = player.getUniqueId().toString();
-		String query = "UPDATE WALLET SET value=value+" + amount + "WHERE player='" + playerId + "';";
-        ChrysusStorage.Store(query);
-        
+        UUID playerId = player.getUniqueId();
+        int balance = wallet.get(playerId);
+        balance = balance + amount;
+        wallet.remove(playerId);
+        wallet.put(playerId, balance);
     }
     
     public static void removeMoney(Player player, int amount)
     {
-        String playerId = player.getUniqueId().toString();
-		String query = "UPDATE WALLET SET value=value-" + amount + "WHERE player='" + playerId + "';";
-        ChrysusStorage.Store(query);
+        UUID playerId = player.getUniqueId();
+        int balance = wallet.get(playerId);
+        balance = balance - amount;
+        wallet.remove(playerId);
+        wallet.put(playerId, balance);
     }
     
     public static void activateWallet(Player player, int value)
@@ -79,7 +79,7 @@ public class ChrysusEconomy
         wallet.put(player.getUniqueId(), value);
     }
     
-    public static void deactivateWallet(Player player)
+    public static void deactivateWallet(Player player) //needs to read into sql first
     {
         wallet.remove(player.getUniqueId());
     }
@@ -92,6 +92,13 @@ public class ChrysusEconomy
     public static void placeOrder(ItemStack itemin, int price, int amount, Player player)
     {
         dynamicPrice(0); //just for debugging at the moment will pass the actual order ID when finished 
+    }
+    
+    public static int getPrice(Material materialin, int amount)
+    {
+        int value = prices.get(materialin);
+        value = value*amount;
+        return value;
     }
     
 }

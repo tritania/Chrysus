@@ -36,7 +36,7 @@ public class Configuration extends YamlConfiguration
     public static String SQLurl;
 	public static String SQLpass;
 	public static String SQLuser;
-    public static int[] savedPrices = new int[Chrysus.translator.totalBlocks()]; //array list should be used instead
+    public static int[] savedPrices = new int[Chrysus.translator.totalBlocks()]; 
     	
 	public Configuration(File file)
 	{

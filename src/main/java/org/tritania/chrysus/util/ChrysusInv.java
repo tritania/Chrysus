@@ -32,7 +32,7 @@ public class ChrysusInv
     
     public static boolean hasItems(Player player, Material boughtItem, int amount) //call to make sure the user actually has the items he is trying to sell
     {
-        return true;
+        return true; //just for debugging currently
     }
     
     public static void addItems(Player player, Material boughtItem, int amount) //will work past 64
