@@ -36,7 +36,7 @@
         <developerConnection>
             scm:git:git@github.com:tritania/Chrysus.git
         </developerConnection>
-        <url>https://github.com/tritanai/Chrysus/</url>
+        <url>https://github.com/tritania/Chrysus/</url>
     </scm>
 
     <properties>
