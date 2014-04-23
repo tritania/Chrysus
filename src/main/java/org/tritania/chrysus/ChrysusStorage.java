@@ -66,6 +66,13 @@ public class ChrysusStorage
 	+ "`OrderID` INTEGER(11) NOT NULL"
 	+ ");"; 
 
+
+	private final static String PRICES = "CREATE TABLE `PRICES` ("
+	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+	+ "`item` VARCHAR(30) NOT NULL,"
+	+ "`price` INTEGER(11) NOT NULL"
+	+ ");"; 
+	
 	public static Connection initialize()
 	{
 		try
@@ -138,6 +145,7 @@ public class ChrysusStorage
     		st = conn.createStatement();
     		st.executeUpdate(WALLET);
     		st.executeUpdate(ORDERS);
+    		st.executeUpdate(PRICES);
     		conn.commit();
     		
 		}

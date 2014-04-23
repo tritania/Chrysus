@@ -59,7 +59,6 @@ public class ChrysusListener implements Listener
         ArrayList<String> data = ChrysusStorage.getData(query);
             if (data.get(0) == "END_DATA_STREAM")
             {
-                Log.severe(query);
                 String queryind = "INSERT INTO WALLET (player, value) VALUES ('" + playerId + "', 500)";
                 ChrysusStorage.Store(queryind);
                 ChrysusEconomy.activateWallet(player, 500);

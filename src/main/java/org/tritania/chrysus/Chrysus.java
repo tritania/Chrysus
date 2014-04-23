@@ -42,10 +42,10 @@ import org.tritania.chrysus.ChrysusEconomy;
 public class Chrysus extends JavaPlugin
 {
 	public Configuration config;
-    public static BlockTranslator translator;
 	
 	public void onLoad()
 	{
+		saveResource("items.csv", true);
 		config = new Configuration(new File(getDataFolder(), "config.yml"));
 	}
 	
@@ -63,6 +63,9 @@ public class Chrysus extends JavaPlugin
 		pm.registerEvents(new ChrysusListener(this), this);
         ChrysusStorage.initialize();
         
+        String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+        ChrysusStorage.Store(queryind);
+        
         getCommand("cbuy").setExecutor(new Buy(this));
         getCommand("csell").setExecutor(new Sell(this));
         getCommand("cset").setExecutor(new Set(this));
@@ -72,15 +75,12 @@ public class Chrysus extends JavaPlugin
 	
 	public void onDisable()
 	{
-        config.savePrices();
         ChrysusStorage.closeConnection();
     }
     
 	public void reload()
 	{
-        config.savePrices();
 		config.load();
-        translator = new BlockTranslator(this);
 	}
 }
 
