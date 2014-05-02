@@ -101,4 +101,8 @@ public class ChrysusEconomy
         return value;
     }
     
+    public static void getItemValues() //grabs the values from SQL on startup
+    {
+		
+	}    
 }

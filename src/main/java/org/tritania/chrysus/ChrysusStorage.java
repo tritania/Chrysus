@@ -68,8 +68,7 @@ public class ChrysusStorage
 
 
 	private final static String PRICES = "CREATE TABLE `PRICES` ("
-	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-	+ "`item` VARCHAR(30) NOT NULL,"
+	+ "`item` VARCHAR(30) NOT NULL PRIMARY KEY,"
 	+ "`price` INTEGER(11) NOT NULL"
 	+ ");"; 
 	

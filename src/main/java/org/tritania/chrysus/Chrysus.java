@@ -45,7 +45,6 @@ public class Chrysus extends JavaPlugin
 	
 	public void onLoad()
 	{
-		saveResource("items.csv", true);
 		config = new Configuration(new File(getDataFolder(), "config.yml"));
 	}
 	
@@ -63,9 +62,23 @@ public class Chrysus extends JavaPlugin
 		pm.registerEvents(new ChrysusListener(this), this);
         ChrysusStorage.initialize();
         
-        String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
-        ChrysusStorage.Store(queryind);
-        
+        //item prices storage
+        File items = new File(getDataFolder(), "items.csv");
+        if (!items.exists())
+        {
+			saveResource("items.csv", true); 
+			String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			ChrysusStorage.Store(queryind);
+		}
+		else
+		{
+			String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			ChrysusStorage.Store(queryind);
+			saveResource("items.csv", true); 
+			queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			ChrysusStorage.Store(queryind);
+		}
+       
         getCommand("cbuy").setExecutor(new Buy(this));
         getCommand("csell").setExecutor(new Sell(this));
         getCommand("cset").setExecutor(new Set(this));
