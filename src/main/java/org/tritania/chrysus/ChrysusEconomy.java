@@ -34,7 +34,6 @@ import org.tritania.chrysus.ChrysusStorage;
 public class ChrysusEconomy
 {
     private static HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); //stores player UUID and wallet value in int
-    private static HashMap<Material, Integer> prices = new HashMap<Material, Integer>(); 
     
 	private Chrysus plugin;
 
@@ -43,10 +42,6 @@ public class ChrysusEconomy
 		this.plugin = plugin;
 	}
     
-    public static void setPrices(Material materialIn, int value)
-    {
-        prices.put(materialIn, value);
-    }
     
     public static int getWalletValue(Player player)
     {
@@ -94,15 +89,19 @@ public class ChrysusEconomy
         dynamicPrice(0); //just for debugging at the moment will pass the actual order ID when finished 
     }
     
-    public static int getPrice(Material materialin, int amount)
+    public static int getItemValue(String item) 
     {
-        int value = prices.get(materialin);
-        value = value*amount;
-        return value;
-    }
-    
-    public static void getItemValues() //grabs the values from SQL on startup
-    {
-		
+		String query = "SELECT price FROM PRICES where item ='" + item + "' limit 1;"; //need to include aliases
+		ArrayList<String> data = ChrysusStorage.getData(query);
+		if (data.get(0) == "END_DATA_STREAM")
+		{
+			return -1; //error as block does not appear in system.
+		}
+		else 
+		{
+			
+			 return Integer.parseInt(data.get(0));
+			
+		}
 	}    
 }

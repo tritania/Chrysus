@@ -54,11 +54,10 @@ public class Buy implements CommandExecutor
         
         else
         {
-            
+            int amount = Integer.parseInt(args[1]);
             Player player = (Player) sender;
             Material bought = BlockTranslator.getItem(args[0]);
-            int amount = Integer.parseInt(args[1]);
-            int cost = ChrysusEconomy.getPrice(bought, amount);
+            int cost = ChrysusEconomy.getItemValue(args[0]) * amount;
             if(ChrysusEconomy.getWalletValue(player) > cost)
             {
                 ChrysusEconomy.removeMoney(player, cost);
