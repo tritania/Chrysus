@@ -55,7 +55,7 @@ public class ChrysusListener implements Listener
 	{
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
-		String query = "SELECT `value` FROM WALLET WHERE player='" + playerId + "';";
+		String query = "SELECT `value` FROM WALLET WHERE `player`='" + playerId + "';";
         ArrayList<String> data = ChrysusStorage.getData(query);
             if (data.get(0) == "END_DATA_STREAM")
             {
@@ -75,6 +75,10 @@ public class ChrysusListener implements Listener
     public void onPlayerLeave(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
+        int value = ChrysusEconomy.getWalletValue(player);
+        String playerId = player.getUniqueId().toString();
+        String queryind = "UPDATE WALLET SET value = " + Integer.toString(value) + " WHERE player = '" + playerId + "'"; 
+        ChrysusStorage.Store(queryind);
         ChrysusEconomy.deactivateWallet(player);
     }
     
