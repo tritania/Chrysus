@@ -19,6 +19,10 @@ package org.tritania.chrysus;
 
 /*Start Imports*/
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,6 +54,8 @@ public class Chrysus extends JavaPlugin
 	
 	public void onEnable()
 	{
+		String location = getDataFolder().getAbsolutePath();
+
 		PluginManager pm;
 		Plugin p;
 		
@@ -68,15 +74,15 @@ public class Chrysus extends JavaPlugin
         if (!items.exists())
         {
 			saveResource("items.csv", true); 
-			String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
 			ChrysusStorage.Store(queryind);
 		}
 		else
 		{
-			String queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
 			ChrysusStorage.Store(queryind);
 			saveResource("items.csv", true); 
-			queryind = "LOAD DATA LOCAL INFILE 'plugins/Chrysus/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
 			ChrysusStorage.Store(queryind);
 		}
        
@@ -87,13 +93,44 @@ public class Chrysus extends JavaPlugin
 		
 	}
 	
-	public void onDisable()
+	public void onDisable() //will probably have to write the values with buffered writer
 	{
+		String location = getDataFolder().getAbsolutePath();
+		String query = "SELECT `item` FROM PRICES"; 
+		String query2 = "SELECT `price` FROM PRICES"; 
+		ArrayList<String> item = ChrysusStorage.getData(query);
+		ArrayList<String> price = ChrysusStorage.getData(query2);
+		if (item.get(0) == "END_DATA_STREAM")
+		{
+			
+		}
+		else 
+		{
+			int length = item.size();
+			try
+			{
+				FileWriter writer = new FileWriter(location + "/items.csv");
+				for(int i = 0; i < length-1; i++)
+				{
+					writer.append(item.get(i));
+					writer.append(',');
+					writer.append(price.get(i));
+					writer.append('\n');
+				}
+				writer.close();
+			}
+			catch(IOException ex)
+			{
+				Log.severe("  " + ex.getMessage());
+			}
+			
+		}
         ChrysusStorage.closeConnection();
     }
     
 	public void reload()
 	{
+		String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
 		config.load();
 	}
 }

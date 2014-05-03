@@ -60,7 +60,7 @@ public class ChrysusListener implements Listener
             if (data.get(0) == "END_DATA_STREAM")
             {
                 String queryind = "INSERT INTO WALLET (player, value) VALUES ('" + playerId + "', 500)";
-                ChrysusStorage.Store(queryind);
+                ChrysusStorage.StoreTwo(queryind);
                 ChrysusEconomy.activateWallet(player, 500);
             }
             else 

@@ -68,7 +68,8 @@ public class ChrysusStorage
 
 
 	private final static String PRICES = "CREATE TABLE `PRICES` ("
-	+ "`item` VARCHAR(30) NOT NULL PRIMARY KEY,"
+	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+	+ "`item` VARCHAR(30) NOT NULL UNIQUE KEY,"
 	+ "`price` INTEGER(11) NOT NULL"
 	+ ");"; 
 	
@@ -213,6 +214,38 @@ public class ChrysusStorage
     	{
     		Connection conn = getConnection();
     		st = conn.createStatement();
+    		st.executeQuery(query);
+    		conn.commit();
+    		
+		}
+		catch (SQLException ex) 
+    	{ 
+    		Log.severe(" SQL Exception 1:");
+    		Log.severe("  " + ex.getMessage());
+    	}
+    	finally 
+    	{
+    		try {
+    			if (st != null) 
+    			{
+    				st.close();
+    			}
+    		} 
+    		catch (SQLException ex) 
+    		{
+    			Log.severe(" SQL Exception 2:");
+    			Log.severe("  " + ex.getMessage());
+    		}
+    	} 
+    }
+    
+    public static void StoreTwo(String query)
+    {
+        Statement st = null;
+    	try 
+    	{
+    		Connection conn = getConnection();
+    		st = conn.createStatement();
     		st.executeUpdate(query);
     		conn.commit();
     		
@@ -284,7 +317,7 @@ public class ChrysusStorage
             {
                 try
                 {
-                    resultsout.add(resin.getString(i));
+                    resultsout.add(resin.getString(1));
                     i++;
                 }
                 catch(SQLException ex)
@@ -297,7 +330,7 @@ public class ChrysusStorage
         }
         catch(SQLException ex)
         {
-            Log.severe(" SQL Exception 5:");
+            Log.severe(" SQL Exception 6:");
             Log.severe("  " + ex.getMessage());
         }
         return resultsout;
