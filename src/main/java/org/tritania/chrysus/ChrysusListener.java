@@ -55,7 +55,7 @@ public class ChrysusListener implements Listener
 	{
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
-		String query = "SELECT value FROM WALLET WHERE player='" + playerId + "';";
+		String query = "SELECT `value` FROM WALLET WHERE player='" + playerId + "';";
         ArrayList<String> data = ChrysusStorage.getData(query);
             if (data.get(0) == "END_DATA_STREAM")
             {

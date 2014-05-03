@@ -59,8 +59,9 @@ public class Chrysus extends JavaPlugin
 		pm = getServer().getPluginManager();
 		config.load();
 		
-		pm.registerEvents(new ChrysusListener(this), this);
+		
         ChrysusStorage.initialize();
+        pm.registerEvents(new ChrysusListener(this), this);
         
         //item prices storage
         File items = new File(getDataFolder(), "items.csv");

@@ -277,7 +277,7 @@ public class ChrysusStorage
     public static ArrayList<String> convertResults(ResultSet resin)
     {
         ArrayList<String> resultsout = new ArrayList<String>();
-        int i=0;
+        int i=1;
         try 
         {
             while(resin.next())

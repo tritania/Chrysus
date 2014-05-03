@@ -91,7 +91,7 @@ public class ChrysusEconomy
     
     public static int getItemValue(String item) 
     {
-		String query = "SELECT price FROM PRICES where item ='" + item + "' limit 1;"; //need to include aliases
+		String query = "SELECT `price` FROM PRICES where item ='" + item + "' limit 1;"; //need to include aliases
 		ArrayList<String> data = ChrysusStorage.getData(query);
 		if (data.get(0) == "END_DATA_STREAM")
 		{
