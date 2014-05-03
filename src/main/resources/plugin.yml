@@ -16,22 +16,6 @@ commands:
     description: Buy items in the market
     aliases: []
     usage: /<command> [item][amount] [price] [time] | [orderid]
-  cclean:
-    description: Cleans a specified players economic data
-    aliases:
-    usage:
-  cdesc:
-    description: Gives economic data 
-    aliases: []
-    usage: /<command> [item] | [company] | [playername]
-  cinc:
-    description: Player run company control
-    aliases: []
-    usage: /<command> 
-  cisk:
-    description: Gives general chrysus information
-    aliases: []
-    usage: /<command> [help]
   cset:
     description: Gives op's the ability to set a players wallet value
     aliases: []

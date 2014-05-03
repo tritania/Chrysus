@@ -33,7 +33,7 @@ import org.tritania.chrysus.ChrysusStorage;
 
 public class ChrysusEconomy
 {
-    private static HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); //stores player UUID and wallet value in int
+    private static HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); 
     
 	private Chrysus plugin;
 

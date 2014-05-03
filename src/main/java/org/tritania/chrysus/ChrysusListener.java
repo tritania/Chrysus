@@ -78,7 +78,7 @@ public class ChrysusListener implements Listener
         int value = ChrysusEconomy.getWalletValue(player);
         String playerId = player.getUniqueId().toString();
         String queryind = "UPDATE WALLET SET value = " + Integer.toString(value) + " WHERE player = '" + playerId + "'"; 
-        ChrysusStorage.Store(queryind);
+        ChrysusStorage.StoreTwo(queryind);
         ChrysusEconomy.deactivateWallet(player);
     }
     
