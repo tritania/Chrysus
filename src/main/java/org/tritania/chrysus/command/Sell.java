@@ -42,8 +42,7 @@ public class Sell implements CommandExecutor
         this.chrysus = chrysus;
     }
     
-    public boolean onCommand(CommandSender sender, Command command, 
-							String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
         if (args.length < 1) 
         {

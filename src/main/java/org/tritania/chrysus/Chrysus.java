@@ -73,6 +73,7 @@ public class Chrysus extends JavaPlugin
         getCommand("csell").setExecutor(new Sell(this));
         getCommand("cset").setExecutor(new Set(this));
         getCommand("cinfo").setExecutor(new OrderInfo(this));
+        getCommand("cwallet").setExecutor(new Wallet(this));
 		
 	}
 	

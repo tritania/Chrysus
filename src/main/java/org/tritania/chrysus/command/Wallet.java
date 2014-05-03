@@ -21,54 +21,38 @@ package org.tritania.chrysus.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.*;
-import org.bukkit.Material;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.entity.Player;
-import org.bukkit.Bukkit;
 
 import org.tritania.chrysus.Chrysus;
-import org.tritania.chrysus.util.Message;
-import org.tritania.chrysus.util.BlockTranslator;
-import org.tritania.chrysus.util.ChrysusInv;
 import org.tritania.chrysus.ChrysusEconomy;
+import org.tritania.chrysus.util.Message;
 /*End Imports*/
 
-public class Buy implements CommandExecutor 
+public class Wallet implements CommandExecutor 
 {
 	public Chrysus chrysus;
 
-    public Buy(Chrysus chrysus)
+    public Wallet(Chrysus chrysus)
     {
         this.chrysus = chrysus;
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-        if (args.length < 1) 
+		Player player = (Player) sender;
+		
+		if (args.length < 1) 
         {
             Message.info(sender, command.getUsage());
             return true;
         }
         
-        else
+        else if(args[0].equals("balance"))
         {
-            int amount = Integer.parseInt(args[1]);
-            Player player = (Player) sender;
-            Material bought = BlockTranslator.getItem(args[0]);
-            int cost = ChrysusEconomy.getItemValue(args[0]) * amount;
-            if(ChrysusEconomy.getWalletValue(player) > cost)
-            {
-                ChrysusEconomy.removeMoney(player, cost);
-                ChrysusInv.addItems(player, bought, amount);
-            }
-            else 
-            {
-                Message.info(sender, "You don't have enough money for that");
-            }
-            
+                Message.info(sender, "Your current balace is: " + ChrysusEconomy.getWalletValue(player));
         }
         
 		return true;
 	}
 }
+

@@ -34,8 +34,7 @@ public class Set implements CommandExecutor
         this.chrysus = chrysus;
     }
     
-    public boolean onCommand(CommandSender sender, Command command, 
-							String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		return true;
 	}

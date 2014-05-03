@@ -36,7 +36,11 @@ commands:
     description: Gives op's the ability to set a players wallet value
     aliases: []
     usage: /command [player | block] [value]
-  cinfo:
-    description: Gives player information on differing values
+  cwallet:
+    description: Gives player information about their wallet
     aliases: []
-    usage: /command [block | wallet]
+    usage: /command [balance]
+  cinfo:
+    description: Gives player information about their orders
+    aliases: []
+    usage: /command []
