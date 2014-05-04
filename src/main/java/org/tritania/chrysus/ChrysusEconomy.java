@@ -89,9 +89,9 @@ public class ChrysusEconomy
         dynamicPrice(0); //just for debugging at the moment will pass the actual order ID when finished 
     }
     
-    public static int getItemValue(String item) 
+    public static int getItemValue(String itemIn) 
     {
-		String query = "SELECT `price` FROM PRICES where item ='" + item + "' limit 1;"; //need to include aliases
+		String query = "SELECT price FROM `PRICES` WHERE LOWER(item)  = LOWER('" + itemIn + "') OR  LOWER(alias)  = LOWER('" + itemIn + "') limit 1";
 		ArrayList<String> data = ChrysusStorage.getData(query);
 		if (data.get(0) == "END_DATA_STREAM")
 		{
