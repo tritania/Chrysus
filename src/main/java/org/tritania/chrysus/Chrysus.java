@@ -98,10 +98,12 @@ public class Chrysus extends JavaPlugin
 		String location = getDataFolder().getAbsolutePath();
 		
 		String query = "SELECT `item` FROM PRICES"; 
-		String query2 = "SELECT `price` FROM PRICES"; 
+		String query2 = "SELECT `alias` FROM PRICES"; 
+		String query3 = "SELECT `price` FROM PRICES"; 
 		
 		ArrayList<String> item = ChrysusStorage.getData(query);
-		ArrayList<String> price = ChrysusStorage.getData(query2);
+		ArrayList<String> alias = ChrysusStorage.getData(query2);
+		ArrayList<String> price = ChrysusStorage.getData(query3);
 		
 		if (item.get(0) == "END_DATA_STREAM")
 		{
@@ -116,6 +118,8 @@ public class Chrysus extends JavaPlugin
 				for(int i = 0; i < length-1; i++)
 				{
 					writer.append(item.get(i));
+					writer.append(',');
+					writer.append(alias.get(i));
 					writer.append(',');
 					writer.append(price.get(i));
 					writer.append('\n');
@@ -142,7 +146,7 @@ public class Chrysus extends JavaPlugin
 		}
 		else
 		{
-			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
+			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)"; //error
 			ChrysusStorage.Store(queryind);
 			saveResource("items.csv", true); 
 			queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";

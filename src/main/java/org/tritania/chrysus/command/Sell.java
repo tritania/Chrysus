@@ -31,6 +31,7 @@ import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
 import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.util.ChrysusInv;
+import org.tritania.chrysus.ChrysusEconomy;
 /*End Imports*/
 
 public class Sell implements CommandExecutor 
@@ -52,13 +53,18 @@ public class Sell implements CommandExecutor
         
         else
         {
-            
             Player player = (Player) sender;
             Material bought = BlockTranslator.getItem(args[0]);
             int amount = Integer.parseInt(args[1]);
-            
-            ChrysusInv.removeItems(player, bought, amount);
-            
+            if(ChrysusInv.hasItems(player, bought, amount) == true)
+            {
+				ChrysusInv.removeItems(player, bought, amount);
+				ChrysusEconomy.addMoney(player, ChrysusEconomy.getItemValue(args[0]) * amount);
+			}
+			else 
+			{
+				Message.info(sender, "You can't sell something you don't have");
+			}
         }
         
 		return true;
