@@ -137,15 +137,15 @@ public class Chrysus extends JavaPlugin
         if (!items.exists())
         {
 			saveResource("items.csv", true); 
-			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
 			ChrysusStorage.Store(queryind);
 		}
 		else
 		{
-			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
 			ChrysusStorage.Store(queryind);
 			saveResource("items.csv", true); 
-			queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+			queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
 			ChrysusStorage.Store(queryind);
 		}
 	}
@@ -153,7 +153,7 @@ public class Chrysus extends JavaPlugin
 	public void reloadPrices()
 	{
 		String location = getDataFolder().getAbsolutePath();
-		String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, price)";
+		String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
 	}
 }
 

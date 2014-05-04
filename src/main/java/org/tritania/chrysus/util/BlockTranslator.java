@@ -16,10 +16,14 @@
  */
 
 package org.tritania.chrysus.util;
+
+import java.util.ArrayList;
+
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.Material;
 
 import org.tritania.chrysus.Chrysus;
+import org.tritania.chrysus.ChrysusStorage;
 
 public class BlockTranslator 
 {
@@ -33,7 +37,18 @@ public class BlockTranslator
     
     public static Material getItem(String itemIn)
     {
-        Material item = Material.getMaterial(itemIn);
-        return item;
+		String query = "SELECT item FROM `PRICES` WHERE LOWER(item)  = LOWER('" + itemIn + "') OR  LOWER(alias)  = LOWER('" + itemIn + "') limit 1";
+		
+		ArrayList<String> data = ChrysusStorage.getData(query);
+		if (data.get(0) == "END_DATA_STREAM")
+		{
+			Material item = Material.getMaterial("AIR"); //internal error block
+			return item;
+		}
+		else 
+		{
+			Material item = Material.getMaterial(data.get(0));
+			return item;
+		}
     }
 }
