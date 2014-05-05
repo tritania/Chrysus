@@ -58,6 +58,7 @@ public class Chrysus extends JavaPlugin
 	
 	public void onEnable()
 	{
+		
 		PluginManager pm;
 		Plugin p;
 		
@@ -67,8 +68,13 @@ public class Chrysus extends JavaPlugin
 		pm = getServer().getPluginManager();
 		config.load();
 		
+		sqlengine = new ChrysusStorage(this);
         sqlengine.initialize();
+        
         pm.registerEvents(new ChrysusListener(this), this);
+        economy = new ChrysusEconomy(this);
+        blocktans = new BlockTranslator(this);
+        chyrsusInv = new ChrysusInv(this);
         
         loadPrices();
 
