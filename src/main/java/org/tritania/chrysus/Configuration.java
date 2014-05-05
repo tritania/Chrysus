@@ -24,19 +24,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 
 import org.tritania.chrysus.util.Log;
-import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.Chrysus;
-import org.tritania.chrysus.ChrysusEconomy;
-import org.tritania.chrysus.ChrysusStorage;
 /*End Imports*/
 
 public class Configuration extends YamlConfiguration
 {
 	private File file;
 	
-    public static String SQLurl;
-	public static String SQLpass;
-	public static String SQLuser;
+    public  String SQLurl;
+	public  String SQLpass;
+	public  String SQLuser;
     
 	public Configuration(File file)
 	{

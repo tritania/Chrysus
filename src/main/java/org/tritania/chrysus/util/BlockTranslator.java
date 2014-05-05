@@ -23,23 +23,22 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.Material;
 
 import org.tritania.chrysus.Chrysus;
-import org.tritania.chrysus.ChrysusStorage;
 
 public class BlockTranslator 
 {
-	public Chrysus plugin;   
+	public Chrysus chrysus;   
 
-	public BlockTranslator(Chrysus plugin)
+	public BlockTranslator(Chrysus chrysus)
 	{
-		this.plugin = plugin;
+		this.chrysus = chrysus;
 	}
     
     
-    public static Material getItem(String itemIn)
+    public  Material getItem(String itemIn)
     {
 		String query = "SELECT item FROM `PRICES` WHERE LOWER(item)  = LOWER('" + itemIn + "') OR  LOWER(alias)  = LOWER('" + itemIn + "') limit 1";
 		
-		ArrayList<String> data = ChrysusStorage.getData(query);
+		ArrayList<String> data = chrysus.sqlengine.getData(query);
 		if (data.get(0) == "END_DATA_STREAM")
 		{
 			Material item = Material.getMaterial("AIR"); //internal error block

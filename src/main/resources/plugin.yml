@@ -28,3 +28,7 @@ commands:
     description: Gives player information about their orders
     aliases: []
     usage: /command []
+  creload:
+    description: Allows the reloading of the plugin without having to reload the server
+    aliases: []
+    usage: /command []

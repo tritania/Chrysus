@@ -30,18 +30,18 @@ public class ChrysusInv
         this.chrysus = chrysus;
     }
     
-    public static boolean hasItems(Player player, Material boughtItem, int amount) //call to make sure the user actually has the items he is trying to sell
+    public  boolean hasItems(Player player, Material boughtItem, int amount) //call to make sure the user actually has the items he is trying to sell
     {
         return player.getInventory().contains(boughtItem, amount);
     }
     
-    public static void addItems(Player player, Material boughtItem, int amount) //will work past 64
+    public  void addItems(Player player, Material boughtItem, int amount) //will work past 64
     {
         ItemStack bought = new ItemStack(boughtItem, amount); 
         player.getInventory().addItem(bought);
     }
     
-    public static void removeItems(Player player, Material boughtItem, int amount) //will work past 64
+    public  void removeItems(Player player, Material boughtItem, int amount) //will work past 64
     {
         ItemStack bought = new ItemStack(boughtItem, amount); 
         player.getInventory().removeItem(bought);

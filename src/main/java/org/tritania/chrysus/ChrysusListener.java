@@ -30,24 +30,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.tritania.chrysus.util.Log;
 
-import org.tritania.chrysus.ChrysusEconomy;
-
-
 public class ChrysusListener implements Listener
 {
-	private Chrysus plugin;
+	private Chrysus chrysus;
 
-	public ChrysusListener(Chrysus plugin)
+	public ChrysusListener(Chrysus chrysus)
 	{
-		this.plugin = plugin;
+		this.chrysus = chrysus;
 	}
 	
 	public void register()
 	{
 		PluginManager manager;
 		
-		manager = plugin.getServer().getPluginManager();
-		manager.registerEvents(this, plugin);
+		manager = chrysus.getServer().getPluginManager();
+		manager.registerEvents(this, chrysus);
 	} 
 	
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -56,18 +53,18 @@ public class ChrysusListener implements Listener
         Player player = event.getPlayer();
         String playerId = player.getUniqueId().toString();
 		String query = "SELECT `value` FROM WALLET WHERE `player`='" + playerId + "';";
-        ArrayList<String> data = ChrysusStorage.getData(query);
+        ArrayList<String> data = chrysus.sqlengine.getData(query);
             if (data.get(0) == "END_DATA_STREAM")
             {
                 String queryind = "INSERT INTO WALLET (player, value) VALUES ('" + playerId + "', 500)";
-                ChrysusStorage.StoreTwo(queryind);
-                ChrysusEconomy.activateWallet(player, 500);
+                chrysus.sqlengine.StoreTwo(queryind);
+                chrysus.economy.activateWallet(player, 500);
             }
             else 
             {
                 int value = 0;
                 value = Integer.parseInt(data.get(0));
-                ChrysusEconomy.activateWallet(player, value);
+                chrysus.economy.activateWallet(player, value);
             }
 	}
     
@@ -75,11 +72,11 @@ public class ChrysusListener implements Listener
     public void onPlayerLeave(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
-        int value = ChrysusEconomy.getWalletValue(player);
+        int value = chrysus.economy.getWalletValue(player);
         String playerId = player.getUniqueId().toString();
         String queryind = "UPDATE WALLET SET value = " + Integer.toString(value) + " WHERE player = '" + playerId + "'"; 
-        ChrysusStorage.StoreTwo(queryind);
-        ChrysusEconomy.deactivateWallet(player);
+        chrysus.sqlengine.StoreTwo(queryind);
+        chrysus.economy.deactivateWallet(player);
     }
     
     

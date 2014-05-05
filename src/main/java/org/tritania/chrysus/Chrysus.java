@@ -46,6 +46,10 @@ import org.tritania.chrysus.ChrysusEconomy;
 public class Chrysus extends JavaPlugin
 {
 	public Configuration config;
+	public ChrysusStorage sqlengine;
+	public ChrysusEconomy economy;
+	public BlockTranslator blocktans;
+	public ChrysusInv chyrsusInv;
 	
 	public void onLoad()
 	{
@@ -63,8 +67,7 @@ public class Chrysus extends JavaPlugin
 		pm = getServer().getPluginManager();
 		config.load();
 		
-		
-        ChrysusStorage.initialize();
+        sqlengine.initialize();
         pm.registerEvents(new ChrysusListener(this), this);
         
         loadPrices();
@@ -74,13 +77,14 @@ public class Chrysus extends JavaPlugin
         getCommand("cset").setExecutor(new Set(this));
         getCommand("cinfo").setExecutor(new OrderInfo(this));
         getCommand("cwallet").setExecutor(new Wallet(this));
+        getCommand("creload").setExecutor(new Reload(this));
 		
 	}
 	
 	public void onDisable() 
 	{
 		offloadPrices();
-        ChrysusStorage.closeConnection();
+        sqlengine.closeConnection();
     }
     
 	public void reload()
@@ -101,9 +105,9 @@ public class Chrysus extends JavaPlugin
 		String query2 = "SELECT `alias` FROM PRICES"; 
 		String query3 = "SELECT `price` FROM PRICES"; 
 		
-		ArrayList<String> item = ChrysusStorage.getData(query);
-		ArrayList<String> alias = ChrysusStorage.getData(query2);
-		ArrayList<String> price = ChrysusStorage.getData(query3);
+		ArrayList<String> item = sqlengine.getData(query);
+		ArrayList<String> alias = sqlengine.getData(query2);
+		ArrayList<String> price = sqlengine.getData(query3);
 		
 		if (item.get(0) == "END_DATA_STREAM")
 		{
@@ -142,15 +146,15 @@ public class Chrysus extends JavaPlugin
         {
 			saveResource("items.csv", true); 
 			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
-			ChrysusStorage.Store(queryind);
+			sqlengine.Store(queryind);
 		}
 		else
 		{
 			String queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' REPLACE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)"; //error
-			ChrysusStorage.Store(queryind);
+			sqlengine.Store(queryind);
 			saveResource("items.csv", true); 
 			queryind = "LOAD DATA LOCAL INFILE '" + location + "/items.csv' IGNORE INTO TABLE PRICES FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (item, alias, price)";
-			ChrysusStorage.Store(queryind);
+			sqlengine.Store(queryind);
 		}
 	}
 	

@@ -24,7 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import org.tritania.chrysus.Chrysus;
-import org.tritania.chrysus.ChrysusEconomy;
 import org.tritania.chrysus.util.Message;
 /*End Imports*/
 
@@ -49,7 +48,7 @@ public class Wallet implements CommandExecutor
         
         else if(args[0].equals("balance"))
         {
-                Message.info(sender, "Your current balace is: " + ChrysusEconomy.getWalletValue(player));
+                Message.info(sender, "Your current balace is: " + chrysus.economy.getWalletValue(player));
         }
         
 		return true;

@@ -27,23 +27,22 @@ import org.bukkit.entity.Entity;
 
 
 import org.tritania.chrysus.util.Log;
-import org.tritania.chrysus.util.BlockTranslator;
 import org.tritania.chrysus.Chrysus;
-import org.tritania.chrysus.ChrysusStorage;
+
 
 public class ChrysusEconomy
 {
-    private static HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); 
+    private  HashMap<UUID, Integer> wallet = new HashMap<UUID, Integer>(); 
     
-	private Chrysus plugin;
+	private Chrysus chrysus;
 
-	public ChrysusEconomy(Chrysus plugin)
+	public ChrysusEconomy(Chrysus chrysus)
 	{
-		this.plugin = plugin;
+		this.chrysus = chrysus;
 	}
     
     
-    public static int getWalletValue(Player player)
+    public  int getWalletValue(Player player)
     {
         UUID playerId = player.getUniqueId();
         int balance = wallet.get(playerId);
@@ -51,7 +50,7 @@ public class ChrysusEconomy
         return balance;
     }
     
-    public static void addMoney(Player player, int amount)
+    public  void addMoney(Player player, int amount)
     {
         UUID playerId = player.getUniqueId();
         int balance = wallet.get(playerId);
@@ -60,7 +59,7 @@ public class ChrysusEconomy
         wallet.put(playerId, balance);
     }
     
-    public static void removeMoney(Player player, int amount)
+    public  void removeMoney(Player player, int amount)
     {
         UUID playerId = player.getUniqueId();
         int balance = wallet.get(playerId);
@@ -69,30 +68,30 @@ public class ChrysusEconomy
         wallet.put(playerId, balance);
     }
     
-    public static void activateWallet(Player player, int value)
+    public void activateWallet(Player player, int value)
     {
         wallet.put(player.getUniqueId(), value);
     }
-    
-    public static void deactivateWallet(Player player) //needs to read into sql first
+   
+    public void deactivateWallet(Player player) //needs to read into sql first
     {
         wallet.remove(player.getUniqueId());
     }
     
-    public static void dynamicPrice(int OrderID)
+    public void dynamicPrice(int OrderID)
     {
         
     }
     
-    public static void placeOrder(ItemStack itemin, int price, int amount, Player player)
+    public void placeOrder(ItemStack itemin, int price, int amount, Player player)
     {
         dynamicPrice(0); //just for debugging at the moment will pass the actual order ID when finished 
     }
     
-    public static int getItemValue(String itemIn) 
+    public int getItemValue(String itemIn) 
     {
 		String query = "SELECT price FROM `PRICES` WHERE LOWER(item)  = LOWER('" + itemIn + "') OR  LOWER(alias)  = LOWER('" + itemIn + "') limit 1";
-		ArrayList<String> data = ChrysusStorage.getData(query);
+		ArrayList<String> data = chrysus.sqlengine.getData(query);
 		if (data.get(0) == "END_DATA_STREAM")
 		{
 			return -1; //error as block does not appear in system.

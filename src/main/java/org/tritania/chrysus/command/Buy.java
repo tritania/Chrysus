@@ -29,9 +29,6 @@ import org.bukkit.Bukkit;
 
 import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
-import org.tritania.chrysus.util.BlockTranslator;
-import org.tritania.chrysus.util.ChrysusInv;
-import org.tritania.chrysus.ChrysusEconomy;
 /*End Imports*/
 
 public class Buy implements CommandExecutor 
@@ -55,12 +52,12 @@ public class Buy implements CommandExecutor
         {
             int amount = Integer.parseInt(args[1]);
             Player player = (Player) sender;
-            Material bought = BlockTranslator.getItem(args[0]);
-            int cost = ChrysusEconomy.getItemValue(args[0]) * amount;
-            if(ChrysusEconomy.getWalletValue(player) > cost)
+            Material bought = chrysus.blocktans.getItem(args[0]);
+            int cost = chrysus.economy.getItemValue(args[0]) * amount;
+            if(chrysus.economy.getWalletValue(player) > cost)
             {
-                ChrysusEconomy.removeMoney(player, cost);
-                ChrysusInv.addItems(player, bought, amount);
+                chrysus.economy.removeMoney(player, cost);
+                chrysus.chyrsusInv.addItems(player, bought, amount);
             }
             else 
             {

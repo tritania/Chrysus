@@ -18,52 +18,37 @@
 package org.tritania.chrysus.command;
 
 /*Start Imports*/
+import org.bukkit.permissions.PermissibleBase;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.*;
-import org.bukkit.Material;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.entity.Player;
-import org.bukkit.Bukkit;
 
 import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
 /*End Imports*/
 
-public class Sell implements CommandExecutor 
+public class Reload implements CommandExecutor 
 {
 	public Chrysus chrysus;
 
-    public Sell(Chrysus chrysus)
+    public Reload(Chrysus chrysus)
     {
         this.chrysus = chrysus;
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-        if (args.length < 1) 
-        {
-            Message.info(sender, command.getUsage());
-            return true;
-        }
-        
-        else
-        {
-            Player player = (Player) sender;
-            Material bought = chrysus.blocktans.getItem(args[0]);
-            int amount = Integer.parseInt(args[1]);
-            if(chrysus.chyrsusInv.hasItems(player, bought, amount) == true)
-            {
-				chrysus.chyrsusInv.removeItems(player, bought, amount);
-				chrysus.economy.addMoney(player, chrysus.economy.getItemValue(args[0]) * amount);
-			}
-			else 
-			{
-				Message.info(sender, "You can't sell something you don't have");
-			}
-        }
-        
+		Player player = (Player) sender;
+		if (player.hasPermission("chrysus.reload"))
+		{
+			chrysus.reloadPrices();
+		}
+		else
+		{
+			 Message.info(sender, "You don't have permission for that");
+		}
 		return true;
 	}
 }

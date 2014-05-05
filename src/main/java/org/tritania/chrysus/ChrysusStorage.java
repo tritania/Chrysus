@@ -43,10 +43,10 @@ public class ChrysusStorage
         this.chrysus = chrysus;
     }
 	
-	private static Connection conn = null;
-    private static ResultSet results = null;
+	private  Connection conn = null;
+    private  ResultSet results = null;
 
-    private final static String WALLET = "CREATE TABLE `WALLET` ("
+    private final  String WALLET = "CREATE TABLE `WALLET` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`player` VARCHAR(36) NOT NULL,"
 	+ "`value` INTEGER(11) NOT NULL,"
@@ -57,7 +57,7 @@ public class ChrysusStorage
     + "`OrderID5` INTEGER(11) DEFAULT 0"
 	+ ");"; 
     
-    private final static String ORDERS = "CREATE TABLE `ORDERS` ("
+    private final  String ORDERS = "CREATE TABLE `ORDERS` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`item` VARCHAR(16) NOT NULL,"
 	+ "`price` INTEGER(11) NOT NULL,"
@@ -67,19 +67,19 @@ public class ChrysusStorage
 	+ ");"; 
 
 
-	private final static String PRICES = "CREATE TABLE `PRICES` ("
+	private final  String PRICES = "CREATE TABLE `PRICES` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`item` VARCHAR(30) NOT NULL UNIQUE KEY,"
 	+ "`alias` VARCHAR(30) NOT NULL,"
 	+ "`price` INTEGER(11) NOT NULL"
 	+ ");"; 
 	
-	public static Connection initialize()
+	public  Connection initialize()
 	{
 		try
 		{
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection(Configuration.SQLurl, Configuration.SQLuser, Configuration.SQLpass);
+				conn = DriverManager.getConnection(chrysus.config.SQLurl, chrysus.config.SQLuser, chrysus.config.SQLpass);
 				conn.setAutoCommit(false);
 		}
 
@@ -103,7 +103,7 @@ public class ChrysusStorage
         return conn;
 	}
     
-    private static boolean TableExists()
+    private  boolean TableExists()
     {
         ResultSet rs = null;
         try 
@@ -136,7 +136,7 @@ public class ChrysusStorage
         }
     }
       
-    public static void CreateTable()
+    public  void CreateTable()
     {
 		Statement st = null;
     	try 
@@ -171,7 +171,7 @@ public class ChrysusStorage
     	} 
 	 }
     
-    public static void closeConnection()
+    public  void closeConnection()
     {
 		if(conn != null) 
 		{
@@ -191,7 +191,7 @@ public class ChrysusStorage
 		}
     }
     
-    public static Connection getConnection()
+    public  Connection getConnection()
 	{
 		if(conn == null) conn = initialize();
 		{
@@ -208,7 +208,7 @@ public class ChrysusStorage
 		return conn;
 	}
     
-    public static void Store(String query)
+    public  void Store(String query)
     {
         Statement st = null;
     	try 
@@ -240,7 +240,7 @@ public class ChrysusStorage
     	} 
     }
     
-    public static void StoreTwo(String query)
+    public  void StoreTwo(String query)
     {
         Statement st = null;
     	try 
@@ -272,7 +272,7 @@ public class ChrysusStorage
     	} 
     }
     
-    public static ArrayList<String> getData(String query)
+    public  ArrayList<String> getData(String query)
     {   
         ArrayList<String> resultsout = new ArrayList<String>();
         Statement st = null;
@@ -308,7 +308,7 @@ public class ChrysusStorage
     
   
   
-    public static ArrayList<String> convertResults(ResultSet resin)
+    public  ArrayList<String> convertResults(ResultSet resin)
     {
         ArrayList<String> resultsout = new ArrayList<String>();
         int i=1;
