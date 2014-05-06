@@ -31,7 +31,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import org.tritania.chrysus.command.*;
-
 import org.tritania.chrysus.util.Log;
 import org.tritania.chrysus.util.Message;
 import org.tritania.chrysus.util.BlockTranslator;
@@ -39,8 +38,6 @@ import org.tritania.chrysus.Configuration;
 import org.tritania.chrysus.ChrysusStorage;
 import org.tritania.chrysus.util.ChrysusInv;
 import org.tritania.chrysus.ChrysusEconomy;
-
-
 /*End Imports*/
 
 public class Chrysus extends JavaPlugin
@@ -72,8 +69,8 @@ public class Chrysus extends JavaPlugin
         sqlengine.initialize();
         
         pm.registerEvents(new ChrysusListener(this), this);
-        economy = new ChrysusEconomy(this);
-        blocktans = new BlockTranslator(this);
+        economy    = new ChrysusEconomy(this);
+        blocktans  = new BlockTranslator(this);
         chyrsusInv = new ChrysusInv(this);
         
         loadPrices();

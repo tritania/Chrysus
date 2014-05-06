@@ -21,9 +21,9 @@ commands:
     aliases: []
     usage: /command [player | block] [value]
   cwallet:
-    description: Gives player information about their wallet
+    description: Gives player control of their wallets
     aliases: []
-    usage: /command [balance]
+    usage: /command [balance][transfer] [amount] [player]
   cinfo:
     description: Gives player information about their orders
     aliases: []

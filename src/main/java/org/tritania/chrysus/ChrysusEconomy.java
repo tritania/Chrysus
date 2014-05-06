@@ -68,6 +68,14 @@ public class ChrysusEconomy
         wallet.put(playerId, balance);
     }
     
+    public void setMoney(Player player, int amount)
+    {
+		UUID playerId = player.getUniqueId();
+        int balance = amount;
+        wallet.remove(playerId);
+        wallet.put(playerId, balance);
+	}
+    
     public void activateWallet(Player player, int value)
     {
         wallet.put(player.getUniqueId(), value);
@@ -102,5 +110,10 @@ public class ChrysusEconomy
 			 return Integer.parseInt(data.get(0));
 			
 		}
+	}
+	
+	public void setItemValue(String item, int price)
+	{
+		String query = "REPLACE INTO PRICES (item,price) VALUES (`" + item + "`, `" + price + "`)";
 	}    
 }

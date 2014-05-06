@@ -49,6 +49,7 @@ public class ChrysusStorage
     private final  String WALLET = "CREATE TABLE `WALLET` ("
 	+ "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
 	+ "`player` VARCHAR(36) NOT NULL,"
+	+ "`active` BOOLEAN NOT NULL,"
 	+ "`value` INTEGER(11) NOT NULL,"
     + "`OrderID1` INTEGER(11) DEFAULT 0,"
     + "`OrderID2` INTEGER(11) DEFAULT 0,"

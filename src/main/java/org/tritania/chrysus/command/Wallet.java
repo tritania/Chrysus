@@ -22,6 +22,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 
 import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
@@ -48,7 +49,30 @@ public class Wallet implements CommandExecutor
         
         else if(args[0].equals("balance"))
         {
-                Message.info(sender, "Your current balace is: " + chrysus.economy.getWalletValue(player));
+            Message.info(sender, "Your current balace is: " + chrysus.economy.getWalletValue(player));
+        }
+        
+        else if(args[0].equals("transfer"))
+        {
+			if(args.length == 3)
+			{
+				int amount = Integer.parseInt(args[1]);
+				if((chrysus.economy.getWalletValue(player) - amount) >= 0)
+				{
+					Player receiver = Bukkit.getPlayer(args[2]);
+					chrysus.economy.removeMoney(player, amount);
+					chrysus.economy.addMoney(receiver, amount);
+				}
+				else 
+				{
+					Message.info(sender, "You don't have enough money for that");
+				}
+			}
+			else
+			{
+				Message.info(sender, command.getUsage());
+				return true;
+			} 
         }
         
 		return true;

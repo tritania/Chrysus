@@ -24,6 +24,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 
 import org.tritania.chrysus.Chrysus;
 import org.tritania.chrysus.util.Message;
@@ -41,9 +42,23 @@ public class Set implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		Player player = (Player) sender;
-		if (player.hasPermission("chrysus.setprices"))
+		if (player.hasPermission("chrysus.set"))
 		{
-			
+			if (args.length < 1) 
+			{
+				Message.info(sender, command.getUsage());
+				return true;
+			}
+			else if(args[0].equals("price"))
+			{
+				chrysus.economy.setItemValue(args[1], Integer.parseInt(args[2]));
+			}
+			else if(args[0].equals("wallet"))
+			{
+				Player receiver = Bukkit.getPlayer(args[1]);
+				int amount = Integer.parseInt(args[2]);
+				chrysus.economy.setMoney(receiver, amount);
+			}
 		}
 		else
 		{
